@@ -35,7 +35,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/src/Connection/Connection.o \
+	${OBJECTDIR}/src/Item/Item.o \
+	${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o \
+	${OBJECTDIR}/src/main.o
 
 
 # C Compiler Flags
@@ -56,16 +59,31 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosqldatabase.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosqldatabase.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosqldatabase ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/Connection/Connection.o: src/Connection/Connection.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Connection
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Connection/Connection.o src/Connection/Connection.cpp
+
+${OBJECTDIR}/src/Item/Item.o: src/Item/Item.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Item
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Item/Item.o src/Item/Item.cpp
+
+${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o: src/NoSQLStore/NoSQLStore.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/NoSQLStore
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o src/NoSQLStore/NoSQLStore.cpp
+
+${OBJECTDIR}/src/main.o: src/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -73,7 +91,7 @@ ${OBJECTDIR}/main.o: main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql.exe
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosqldatabase.exe
 
 # Subprojects
 .clean-subprojects:

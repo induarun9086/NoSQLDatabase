@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=Cygwin_4.x-Windows
 CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin_4.x-Windows
-CND_ARTIFACT_NAME_Debug=nosql
-CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin_4.x-Windows/nosql
+CND_ARTIFACT_NAME_Debug=nosqldatabase
+CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin_4.x-Windows/nosqldatabase
 CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin_4.x-Windows/package
-CND_PACKAGE_NAME_Debug=nosql.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin_4.x-Windows/package/nosql.tar
+CND_PACKAGE_NAME_Debug=nosqldatabase.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin_4.x-Windows/package/nosqldatabase.tar
 # Release configuration
 CND_PLATFORM_Release=Cygwin_4.x-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/Cygwin_4.x-Windows
-CND_ARTIFACT_NAME_Release=nosql
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin_4.x-Windows/nosql
+CND_ARTIFACT_NAME_Release=nosqldatabase
+CND_ARTIFACT_PATH_Release=dist/Release/Cygwin_4.x-Windows/nosqldatabase
 CND_PACKAGE_DIR_Release=dist/Release/Cygwin_4.x-Windows/package
-CND_PACKAGE_NAME_Release=nosql.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin_4.x-Windows/package/nosql.tar
+CND_PACKAGE_NAME_Release=nosqldatabase.tar
+CND_PACKAGE_PATH_Release=dist/Release/Cygwin_4.x-Windows/package/nosqldatabase.tar
 #
 # include compiler specific variables
 #
