@@ -26,3 +26,13 @@
 *.exe
 *.out
 *.app
+
+/src/.DS_Store
+/src/Connection/.DS_Store
+/src/Item/.DS_Store
+/src/NoSQLStore/.DS_Store
+/.DS_Store
+/.project
+/.cproject
+/.settings
+
