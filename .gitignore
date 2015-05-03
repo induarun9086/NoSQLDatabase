@@ -35,4 +35,9 @@
 /.project
 /.cproject
 /.settings
+/build
+Data
+data.txt
+.dep.inc
+LICENSE
 
