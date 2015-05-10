@@ -11,56 +11,91 @@
 #include <string>
 #include <iomanip>
 
+#include "main.h"
+#include "ipc/ipc.hpp"
 #include "Item/Item.h"
 
 using namespace std;
 
+int main(int argc, char* argv[]) {
+    cIPCIntf* ipcIf = new cIPCIntf();
+    struct ipcMsg rcvdMsg;
+    struct ipcMsg sendMsg;
 
-int main() {
-	char choice;
-	do {
-		std::cout << "Welcome" << std::endl;
-		std::cout << "What would you like to do?" << std::endl;
-		std::cout << "1. Add" << std::endl;
-		std::cout << "2. Manipulate" << std::endl;
-		std::cout << "3. See All Items" << std::endl;
-		std::cout << "4. Quit" << std::endl;
+    /* Validate the number of arguments */
+    if (argc < 2) {
+        cout << "Provide argument s for server or c for client" << endl;
+    } else {
+        /* If option s is given then we should run in server mode */
+        if (argv[1][0] == 's') {
+            cout << "Server Start Up...." << endl;
+            /* Open the IPC interface, and if opened continue */
+            if (ipcIf->openIf("nosqlipc", CIPCINTF_OPEN_MODE_SERVER)) {
+                cout << "IPC Opened, waiting for messages...." << endl;
 
-		std::cout << "Enter number...." << std::endl;
-		cin >> choice;
+                /* Get the next message */
+                while (ipcIf->getMsg(&rcvdMsg)) {
+                    
+                    cout << "command received from client : " << rcvdMsg.commandID <<endl;
 
-		while (choice != '1' && choice != '2' && choice != '3' && choice != '4') {
-			std::cout << "Bad choice ( 1,2,3) , enter choice : ";
-			std::cin >> choice;
-		}
+                    switch (rcvdMsg.commandID) {
+                        case NOSQL_DATABASE_ADD:
 
-		// Switch statement
-		switch (choice) {
-		case '1': //ADD
-		{
-			Item i1;
-			i1.addItem();
+                            break;
+                        case NOSQL_DATABASE_UPDATE:
 
-		}
-			break;
+                            break;
+                        case NOSQL_DATABASE_LIST:
 
-		case '2':  //Manipulate
-		{
-			Item i2;
-			i2.manipulateItem();
-		}
-			break;
+                            break;
+                        default:
+                            cout << "Unknown message from client" << endl;
+                    }
+                    
+                    
 
-		case '3':   //See all Items
-		{
-			Item i3;
-			i3.showItem();
-		}
-			break;
+                    /* Send reply to client */
+                    ipcIf->sendMsg(&sendMsg);
 
-		}; // end of switch
+                    /* Wait 1 sec */
+                    //boost::this_thread::sleep(boost::posix_time::seconds(1));
+                }
 
-	} while (choice != '4');
+                cout << "Server Shutdown...." << endl;
 
-	return 0;
+                /* Close before exit */
+                ipcIf->closeIf();
+            }
+        } else
+            /* Else in client mode */ {
+            cout << "Client Start Up...." << endl;
+
+            if (ipcIf->openIf("nosqlipc", CIPCINTF_OPEN_MODE_CLIENT)) {
+                
+
+                do {
+                    cout << ">>";
+                    cin >> sendMsg.commandID;
+
+                    /* Send message to server */
+                    ipcIf->sendMsg(&sendMsg);
+
+                    /* Read message from server */
+                    if (ipcIf->getMsg(&rcvdMsg)) {
+                        
+                        cout << "Reply Received from Server :" << rcvdMsg.replyStatus;
+
+                        /* Wait 1 sec */
+                        //boost::this_thread::sleep(boost::posix_time::seconds(1));
+                    } else {
+                        break;
+                    }
+                } while (1);
+
+                /* Close before exit */
+                ipcIf->closeIf();
+            }
+        }
+    }
+    return 0;
 }
