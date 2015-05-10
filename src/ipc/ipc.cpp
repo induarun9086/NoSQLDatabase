@@ -54,10 +54,12 @@ bool cIPCIntf::openIf(string ifName, int openMode)
         /* Validate pipe handle */
         if(hPipe == INVALID_HANDLE_VALUE)
         {
-          cout << "Couldn't open the pipe for communication err:%d" << GetLastError() << endl;
+          cout << "Couldn't open the pipe for communication err:" << GetLastError() << endl;
         }
         else
         {
+          cout << "Waiting to connection from clients..." << endl;
+           
           /* Try to connect to the opened pipe, this is succeed when there are 
              clients listening to this pipe */
           ConnectNamedPipe(hPipe, NULL);
@@ -124,7 +126,7 @@ bool cIPCIntf::openIf(string ifName, int openMode)
       /* Validate pipe handle */
       if(hPipe == INVALID_HANDLE_VALUE)
       {
-        cout << "Couldn't open the pipe for communication err:%d\n", GetLastError());
+        cout << "Couldn't open the pipe for communication err:" << GetLastError();
       }
       /* Valid handle available */
       else
@@ -185,10 +187,12 @@ bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
   bool msgAvai = true;
     
 #if _OS_WINDOWS_
-    
-  int ipSize = 0;
+  
+  unsigned int ipSize = 0;
 
-  ReadFile(hPipe, pIPCMsg, sizeof(ipcMsg), &ipSize, NULL);
+  msgAvai = ReadFile(hPipe, pIPCMsg, sizeof(ipcMsg), &ipSize, NULL);
+  
+  cout << "ReadFile " << msgAvai << ", " << ipSize << "/" << sizeof(ipcMsg) << ", " << GetLastError() << endl;
   
 #elif _OS_MAC_X_
 
@@ -206,7 +210,7 @@ void cIPCIntf::sendMsg(ipcMsg* pIPCMsg)
     
 #if _OS_WINDOWS_
     
-  int ipSize = 0;
+  unsigned int opSize = 0;
     
   WriteFile(hPipe, pIPCMsg, sizeof(ipcMsg), &opSize, NULL);
   

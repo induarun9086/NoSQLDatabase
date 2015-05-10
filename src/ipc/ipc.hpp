@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <string>
 
-#define _OS_WINDOWS_ ((_WIN32) || (_WIN64))
+#define _OS_WINDOWS_ (defined(__CYGWIN__))
     
 #define _OS_MAC_X_   ((__APPLE__) && (__MACH__))
 
@@ -27,8 +27,6 @@
 #error "Unsupported OS"
 #endif
 
-#include <boost/thread/thread.hpp>
-
 #define CIPCINTF_OPEN_MODE_SERVER (0)
 #define CIPCINTF_OPEN_MODE_CLIENT (1)
 
@@ -39,8 +37,8 @@ struct ipcMsg
     int connectionID;
     int commandID;
     int itemID;
-    string itemName;
-    string description;
+    char itemName[32];
+    char description[512];
     int quantity;
     double price; 
     int replyStatus;

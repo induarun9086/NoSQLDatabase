@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Connection/Connection.o \
 	${OBJECTDIR}/src/Item/Item.o \
 	${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o \
+	${OBJECTDIR}/src/ipc/ipc.o \
 	${OBJECTDIR}/src/main.o
 
 
@@ -79,6 +80,11 @@ ${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o: src/NoSQLStore/NoSQLStore.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/NoSQLStore
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o src/NoSQLStore/NoSQLStore.cpp
+
+${OBJECTDIR}/src/ipc/ipc.o: src/ipc/ipc.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/ipc
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ipc/ipc.o src/ipc/ipc.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

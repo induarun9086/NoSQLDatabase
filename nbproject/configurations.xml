@@ -12,21 +12,26 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <logicalFolder name="src" displayName="src" projectFiles="true">
-        <logicalFolder name="Connection" displayName="Connection" projectFiles="true">
-          <itemPath>src/Connection/Connection.cpp</itemPath>
-          <itemPath>src/Connection/Connection.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="Item" displayName="Item" projectFiles="true">
-          <itemPath>src/Item/Item.cpp</itemPath>
-          <itemPath>src/Item/Item.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="NoSQLStore" displayName="NoSQLStore" projectFiles="true">
-          <itemPath>src/NoSQLStore/NoSQLStore.cpp</itemPath>
-          <itemPath>src/NoSQLStore/NoSQLStore.h</itemPath>
-        </logicalFolder>
-        <itemPath>src/main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="src" displayName="src" projectFiles="true">
+      <logicalFolder name="Connection" displayName="Connection" projectFiles="true">
+        <itemPath>src/Connection/Connection.cpp</itemPath>
+        <itemPath>src/Connection/Connection.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="ipc" displayName="ipc" projectFiles="true">
+        <itemPath>src/ipc/ipc.cpp</itemPath>
+        <itemPath>src/ipc/ipc.hpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Item" displayName="Item" projectFiles="true">
+        <itemPath>src/Item/Item.cpp</itemPath>
+        <itemPath>src/Item/Item.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="NoSQLStore" displayName="NoSQLStore" projectFiles="true">
+        <itemPath>src/NoSQLStore/NoSQLStore.cpp</itemPath>
+        <itemPath>src/NoSQLStore/NoSQLStore.h</itemPath>
+      </logicalFolder>
+      <itemPath>src/main.cpp</itemPath>
+      <itemPath>src/main.h</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -47,7 +52,7 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>Cygwin_4.x|Cygwin_4.x</compilerSet>
+        <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -70,7 +75,13 @@
       </item>
       <item path="src/NoSQLStore/NoSQLStore.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/ipc/ipc.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ipc/ipc.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -105,7 +116,13 @@
       </item>
       <item path="src/NoSQLStore/NoSQLStore.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/ipc/ipc.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ipc/ipc.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
