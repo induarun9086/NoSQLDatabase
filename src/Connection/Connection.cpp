@@ -7,7 +7,7 @@
 
 #include "Connection.h"
 
-Connection::Connection() {
+Connection::Connection(int connectionID) {
 	// TODO Auto-generated constructor stub
 
 }

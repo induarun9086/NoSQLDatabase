@@ -9,6 +9,8 @@
 #define SRC_NOSQLSTORE_NOSQLSTORE_H_
 
 #include <string>
+#include <map>
+
 #include "../Connection/Connection.h"
 
 using namespace std;
@@ -16,6 +18,7 @@ using namespace std;
 class NoSQLStore {
 public:
 	int numberOfConnections;
+        map<int,Connection*> connectionMap;
 
 public:
 	NoSQLStore();
@@ -23,10 +26,10 @@ public:
 
 public:
 	int openConnection();
-	void closeConnection(int);
-	Connection getConnection(int);
-	Connection getKeyValueStore();
-	void evaluateChange(int,string,string);
+	//void closeConnection(int);
+	//Connection getConnection(int);
+	//Connection getKeyValueStore();
+        //void evaluateChange(int,string,string);
 
 };
 

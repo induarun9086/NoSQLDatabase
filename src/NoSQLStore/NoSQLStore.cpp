@@ -7,3 +7,18 @@
 
 #include "NoSQLStore.h"
 
+NoSQLStore::NoSQLStore() {
+    numberOfConnections = 0;
+}
+
+int NoSQLStore::openConnection() {
+    Connection* connection = new Connection(numberOfConnections);
+    connectionMap[numberOfConnections] = connection;
+    numberOfConnections++;
+    return numberOfConnections - 1;
+}
+
+NoSQLStore::~NoSQLStore()
+{
+    
+}

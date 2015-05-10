@@ -36,7 +36,7 @@ using namespace std;
 
 struct ipcMsg
 {
-    int clientID;
+    int connectionID;
     int commandID;
     int itemID;
     string itemName;

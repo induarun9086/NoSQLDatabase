@@ -11,6 +11,7 @@
 #define NOSQL_DATABASE_ADD ((int) 0)
 #define NOSQL_DATABASE_UPDATE ((int) 1)
 #define NOSQL_DATABASE_LIST ((int) 2)
+#define NOSQL_DATABASE_OPEN_CONNECTION ((int)3)
 
 #endif	/* MAIN_H */
 

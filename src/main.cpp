@@ -14,6 +14,7 @@
 #include "main.h"
 #include "ipc/ipc.hpp"
 #include "Item/Item.h"
+#include "NoSQLStore/NoSQLStore.h"
 
 using namespace std;
 
@@ -32,27 +33,44 @@ int main(int argc, char* argv[]) {
             /* Open the IPC interface, and if opened continue */
             if (ipcIf->openIf("nosqlipc", CIPCINTF_OPEN_MODE_SERVER)) {
                 cout << "IPC Opened, waiting for messages...." << endl;
-
+                NoSQLStore* nosqlStore = new NoSQLStore();
                 /* Get the next message */
                 while (ipcIf->getMsg(&rcvdMsg)) {
-                    
-                    cout << "command received from client : " << rcvdMsg.commandID <<endl;
 
-                    switch (rcvdMsg.commandID) {
+                    cout << "command received from client : " << rcvdMsg.commandID << endl;
+
+                    int commandID = rcvdMsg.commandID;
+                    sendMsg.replyStatus = 1;
+                    sendMsg.commandID = commandID;
+
+                    switch (commandID) {
+                        case NOSQL_DATABASE_OPEN_CONNECTION:
+                            sendMsg.connectionID = nosqlStore->openConnection();
+                            sendMsg.replyStatus = 0;
+                            break;
                         case NOSQL_DATABASE_ADD:
-
-                            break;
+                        {
+                            Item* i = new Item();
+                            i->addItem();
+                        }
+                        break;
                         case NOSQL_DATABASE_UPDATE:
-
-                            break;
+                        {
+                            Item* i = new Item();
+                            i->manipulateItem();
+                        }
+                        break;
                         case NOSQL_DATABASE_LIST:
-
+                        {
+                            Item* i = new Item();
+                            i->showItem();
+                        }
                             break;
                         default:
                             cout << "Unknown message from client" << endl;
                     }
-                    
-                    
+
+
 
                     /* Send reply to client */
                     ipcIf->sendMsg(&sendMsg);
@@ -71,7 +89,7 @@ int main(int argc, char* argv[]) {
             cout << "Client Start Up...." << endl;
 
             if (ipcIf->openIf("nosqlipc", CIPCINTF_OPEN_MODE_CLIENT)) {
-                
+
 
                 do {
                     cout << ">>";
@@ -82,8 +100,29 @@ int main(int argc, char* argv[]) {
 
                     /* Read message from server */
                     if (ipcIf->getMsg(&rcvdMsg)) {
-                        
-                        cout << "Reply Received from Server :" << rcvdMsg.replyStatus;
+
+                        switch (rcvdMsg.commandID) {
+                            case NOSQL_DATABASE_OPEN_CONNECTION:
+                                cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
+                                cout << "Connection ID is  " << rcvdMsg.connectionID << endl;
+
+
+                                break;
+
+                            case NOSQL_DATABASE_ADD:
+
+                                break;
+                            case NOSQL_DATABASE_UPDATE:
+
+                                break;
+                            case NOSQL_DATABASE_LIST:
+
+                                break;
+                            default:
+                                cout << "Unknown message from client" << endl;
+
+                                cout << "Reply Received from Server :" << rcvdMsg.replyStatus;
+                        }
 
                         /* Wait 1 sec */
                         //boost::this_thread::sleep(boost::posix_time::seconds(1));

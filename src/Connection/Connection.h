@@ -16,7 +16,7 @@ class Connection {
 public:
 	int connectionID;
 public:
-	Connection();
+	Connection(int connectionID);
 	virtual ~Connection();
 
 public:
