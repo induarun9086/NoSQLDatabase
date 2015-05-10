@@ -36,6 +36,7 @@
 /.cproject
 /.settings
 /build
+/dist
 Data
 data.txt
 .dep.inc

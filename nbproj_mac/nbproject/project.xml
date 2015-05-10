@@ -10,8 +10,11 @@
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
             </sourceRootList>
+            <header-extensions>h</header-extensions>
+            <sourceEncoding>UTF-8</sourceEncoding>
+            <make-dep-projects/>
             <confList>
                 <confElem>
                     <name>Debug</name>
