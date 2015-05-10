@@ -41,3 +41,5 @@ data.txt
 .dep.inc
 LICENSE
 
+/nbproj_mac/build/
+/nbproj_mac/dist/
