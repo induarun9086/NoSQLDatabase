@@ -50,20 +50,40 @@ int main(int argc, char* argv[]) {
                             break;
                         case NOSQL_DATABASE_ADD:
                         {
-                            Item* i = new Item();
-                            i->addItem();
+                            int connectionID = sendMsg.connectionID;
+                            Connection* connection = nosqlStore->connectionMap[connectionID];
+                            if (connection != NULL) {
+                                cout << "Add Item Request has been received from the client : " << connectionID << endl;
+                                connection->addItem();
+                            } else {
+                                cout << "Connection has not opened.Open connetion and call add item" << endl;
+                            }
+
                         }
-                        break;
+                            break;
                         case NOSQL_DATABASE_UPDATE:
                         {
-                            Item* i = new Item();
-                            i->manipulateItem();
+                            int connectionID = sendMsg.connectionID;
+                            Connection* connection = nosqlStore->connectionMap[connectionID];
+                            if (connection != NULL) {
+                                cout << "Update Item Request has been received from the client : " << connectionID << endl;
+                                connection->updateItem();
+                            } else {
+                                cout << "Connection has not opened.Open connetion and call update item" << endl;
+                            }
+
                         }
-                        break;
+                            break;
                         case NOSQL_DATABASE_LIST:
                         {
-                            Item* i = new Item();
-                            i->showItem();
+                            int connectionID = sendMsg.connectionID;
+                            Connection* connection = nosqlStore->connectionMap[connectionID];
+                            if (connection != NULL) {
+                                cout << "Update Item Request has been received from the client : " << connectionID << endl;
+                                connection->getItem();
+                            } else {
+                                cout << "Connection has not opened.Open connetion and call update item" << endl;
+                            }
                         }
                             break;
                         default:
@@ -111,12 +131,15 @@ int main(int argc, char* argv[]) {
 
                             case NOSQL_DATABASE_ADD:
 
+                                cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
+
                                 break;
                             case NOSQL_DATABASE_UPDATE:
+                                cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
 
                                 break;
                             case NOSQL_DATABASE_LIST:
-
+                                cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
                                 break;
                             default:
                                 cout << "Unknown message from client" << endl;
