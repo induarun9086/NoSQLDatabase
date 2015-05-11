@@ -20,11 +20,11 @@ public:
 	virtual ~Connection();
 
 public:
-	string getItem(string);
-	void addItem(string,string);
-	void updateItem(string,string);
-	int registerEvent(string);
-	void unregisterEvent(int);
+	void getItem();
+	void addItem();
+	void updateItem();
+	//int registerEvent(string);
+	//void unregisterEvent(int);
 };
 
 #endif /* SRC_CONNECTION_CONNECTION_H_ */
