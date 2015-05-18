@@ -25,6 +25,12 @@
           <itemPath>/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/Item/Item.cpp</itemPath>
           <itemPath>/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/Item/Item.h</itemPath>
         </logicalFolder>
+        <logicalFolder name="KeyValueStore"
+                       displayName="KeyValueStore"
+                       projectFiles="true">
+          <itemPath>/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.cpp</itemPath>
+          <itemPath>/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.h</itemPath>
+        </logicalFolder>
         <logicalFolder name="NoSQLStore" displayName="NoSQLStore" projectFiles="true">
           <itemPath>/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/NoSQLStore/NoSQLStore.cpp</itemPath>
           <itemPath>/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/NoSQLStore/NoSQLStore.h</itemPath>
@@ -80,6 +86,16 @@
             flavor2="0">
       </item>
       <item path="/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/Item/Item.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -151,6 +167,16 @@
             flavor2="0">
       </item>
       <item path="/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/Item/Item.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/Users/indudinesh/Documents/indu/c++ workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.h"
             ex="false"
             tool="3"
             flavor2="0">

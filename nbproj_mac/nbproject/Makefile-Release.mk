@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/1939253193/Connection.o \
 	${OBJECTDIR}/_ext/395932884/Item.o \
+	${OBJECTDIR}/_ext/7405130/KeyValueStore.o \
 	${OBJECTDIR}/_ext/315475475/NoSQLStore.o \
 	${OBJECTDIR}/_ext/1095637251/ipc.o \
 	${OBJECTDIR}/_ext/252661366/main.o
@@ -75,6 +76,11 @@ ${OBJECTDIR}/_ext/395932884/Item.o: /Users/indudinesh/Documents/indu/c++\ worksp
 	${MKDIR} -p ${OBJECTDIR}/_ext/395932884
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/395932884/Item.o /Users/indudinesh/Documents/indu/c++\ workspace/NoSQLDataBase/src/Item/Item.cpp
+
+${OBJECTDIR}/_ext/7405130/KeyValueStore.o: /Users/indudinesh/Documents/indu/c++\ workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/7405130
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/7405130/KeyValueStore.o /Users/indudinesh/Documents/indu/c++\ workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.cpp
 
 ${OBJECTDIR}/_ext/315475475/NoSQLStore.o: /Users/indudinesh/Documents/indu/c++\ workspace/NoSQLDataBase/src/NoSQLStore/NoSQLStore.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/315475475

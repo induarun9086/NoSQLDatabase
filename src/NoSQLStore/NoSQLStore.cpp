@@ -18,7 +18,24 @@ int NoSQLStore::openConnection() {
     return numberOfConnections - 1;
 }
 
-NoSQLStore::~NoSQLStore()
-{
-    
+Connection* NoSQLStore::getConnection(int connectionID) {
+    Connection* connection = connectionMap[connectionID];
+    if (connection == NULL) {
+        throw std::invalid_argument("Open connection and proceed");
+    }
+    return connection;
+}
+
+void NoSQLStore::closeConnection(int connectionID) {
+    connectionMap.erase(connectionID);
+}
+
+KeyValueStore* NoSQLStore::getKeyValueStore() {
+
+    return new KeyValueStore();
+
+}
+
+NoSQLStore::~NoSQLStore() {
+
 }

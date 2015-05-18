@@ -15,6 +15,8 @@
 #include "ipc/ipc.hpp"
 #include "Item/Item.h"
 #include "NoSQLStore/NoSQLStore.h"
+#include "Connection/Connection.h"
+
 
 using namespace std;
 
@@ -51,39 +53,30 @@ int main(int argc, char* argv[]) {
                         case NOSQL_DATABASE_ADD:
                         {
                             int connectionID = sendMsg.connectionID;
-                            Connection* connection = nosqlStore->connectionMap[connectionID];
-                            if (connection != NULL) {
-                                cout << "Add Item Request has been received from the client : " << connectionID << endl;
-                                connection->addItem();
-                            } else {
-                                cout << "Connection has not opened.Open connetion and call add item" << endl;
-                            }
+                            Connection* connection = nosqlStore->getConnection(connectionID);
+
+                            cout << "Add Item Request has been received from the client : " << connectionID << endl;
+                            connection->addItem();
 
                         }
                             break;
                         case NOSQL_DATABASE_UPDATE:
                         {
                             int connectionID = sendMsg.connectionID;
-                            Connection* connection = nosqlStore->connectionMap[connectionID];
-                            if (connection != NULL) {
-                                cout << "Update Item Request has been received from the client : " << connectionID << endl;
-                                connection->updateItem();
-                            } else {
-                                cout << "Connection has not opened.Open connetion and call update item" << endl;
-                            }
+                            Connection* connection = nosqlStore->getConnection(connectionID);
 
+                            cout << "Update Item Request has been received from the client : " << connectionID << endl;
+                            connection->updateItem();
                         }
                             break;
                         case NOSQL_DATABASE_LIST:
                         {
                             int connectionID = sendMsg.connectionID;
-                            Connection* connection = nosqlStore->connectionMap[connectionID];
-                            if (connection != NULL) {
-                                cout << "Update Item Request has been received from the client : " << connectionID << endl;
-                                connection->getItem();
-                            } else {
-                                cout << "Connection has not opened.Open connetion and call update item" << endl;
-                            }
+                            Connection* connection = nosqlStore->getConnection(connectionID);
+                            cout << "List Item Request has been received from the client : " << connectionID << endl;
+
+                            connection->getItem();
+
                         }
                             break;
                         default:

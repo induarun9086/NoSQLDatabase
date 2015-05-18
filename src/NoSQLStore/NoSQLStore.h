@@ -12,6 +12,7 @@
 #include <map>
 
 #include "../Connection/Connection.h"
+#include "../KeyValueStore/KeyValueStore.h"
 
 using namespace std;
 
@@ -26,10 +27,11 @@ public:
 
 public:
 	int openConnection();
-	//void closeConnection(int);
-	//Connection getConnection(int);
+	void closeConnection(int);
+	Connection* getConnection(int);
 	//Connection getKeyValueStore();
         //void evaluateChange(int,string,string);
+        KeyValueStore* getKeyValueStore();
 
 };
 
