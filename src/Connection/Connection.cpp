@@ -7,6 +7,8 @@
 
 #include "Connection.h"
 #include "../Item/Item.h"
+#include "../KeyValueStore/KeyValueStore.h"
+
 
 
 Connection::Connection(int connectionID) {
@@ -18,21 +20,21 @@ Connection::~Connection() {
 	// TODO Auto-generated destructor stub
 }
 
-void Connection::addItem()
+void Connection::addItem(Item* item)
 {
-    Item* i = new Item();
-    i->addItem();
+    KeyValueStore* keyValueStore = new KeyValueStore();
+    keyValueStore->addItem(item);
 }
 
-void Connection::updateItem()
+/*void Connection::updateItem()
 {
     Item* i = new Item();
-    i->manipulateItem();
+    //i->manipulateItem();
 }
 
 void Connection::getItem()
 {
     Item* i = new Item();
-    i->showItem();
-}
+    //i->showItem();
+}*/
 

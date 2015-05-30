@@ -9,6 +9,7 @@
 #define	KEYVALUESTORE_H
 
 #include <string>
+#include "../Item/Item.h"
 
 using namespace std;
 
@@ -21,9 +22,11 @@ public:
     virtual ~KeyValueStore();
 public:
     void intialize(string path);
-    string get(string key);
-    void put (string key,string value);
+    void addItem(Item* item);
+    void manipulateItem (string key,string value);
+    void listItems();
     void persist(string path);
+    void serializeItem(Item* item);
 };
 
 #endif	/* KEYVALUESTORE_H */

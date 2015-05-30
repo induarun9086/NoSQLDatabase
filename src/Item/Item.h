@@ -14,18 +14,21 @@
 using namespace std;
 
 class Item {
-public:
-		string name;
-		string des;
-		int price;
+private:
+    string itemName;
+    string itemDescription;
+    double itemPrice;
 
 public:
-		Item();
+    Item();
 
 public:
-		void addItem();
-		void showItem();
-		void manipulateItem();
+    void setName(string name);
+    string getName();
+    void setDescription(string description);
+    string getDescription();
+    void setPrice(double price);
+    double getPrice();
 
 };
 

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <sstream>
 
 #include "main.h"
 #include "ipc/ipc.hpp"
@@ -56,7 +57,12 @@ int main(int argc, char* argv[]) {
                             Connection* connection = nosqlStore->getConnection(connectionID);
 
                             cout << "Add Item Request has been received from the client : " << connectionID << endl;
-                            connection->addItem();
+                            Item* item = new Item();
+                            item->setName(rcvdMsg.itemName);
+                            item->setDescription(rcvdMsg.description);
+                            item->setPrice(rcvdMsg.price);
+                            
+                            connection->addItem(item);
 
                         }
                             break;
@@ -66,7 +72,7 @@ int main(int argc, char* argv[]) {
                             Connection* connection = nosqlStore->getConnection(connectionID);
 
                             cout << "Update Item Request has been received from the client : " << connectionID << endl;
-                            connection->updateItem();
+                            //connection->updateItem();
                         }
                             break;
                         case NOSQL_DATABASE_LIST:
@@ -75,7 +81,7 @@ int main(int argc, char* argv[]) {
                             Connection* connection = nosqlStore->getConnection(connectionID);
                             cout << "List Item Request has been received from the client : " << connectionID << endl;
 
-                            connection->getItem();
+                            //connection->getItem();
 
                         }
                             break;
@@ -103,10 +109,14 @@ int main(int argc, char* argv[]) {
 
             if (ipcIf->openIf("nosqlipc", CIPCINTF_OPEN_MODE_CLIENT)) {
 
-
+                string command;
                 do {
-                    cout << ">>";
-                    cin >> sendMsg.commandID;
+                    bool error;
+                    do {
+                        cout << ">>";
+                        getline(cin, command);
+                        error = parseCommand(command,&sendMsg);
+                    }while (error == true);
 
                     /* Send message to server */
                     ipcIf->sendMsg(&sendMsg);
@@ -153,4 +163,45 @@ int main(int argc, char* argv[]) {
         }
     }
     return 0;
+}
+
+bool parseCommand(string command,struct ipcMsg* psendMsg)
+{
+    bool error = true;
+    string commandString;
+    stringstream commandstream(command);
+    commandstream >> commandString;
+    if(commandString.compare("open") == 0)
+    {
+        cout << "command string is : " << commandString;
+        psendMsg->commandID = NOSQL_DATABASE_OPEN_CONNECTION;
+        error = false;
+    }
+    else if(commandString.compare("add") == 0)
+    {        
+        psendMsg->commandID = NOSQL_DATABASE_ADD;
+        commandstream >> psendMsg->itemName >> psendMsg->description >> psendMsg->price;
+        error = commandstream.good();
+    }
+    else if(commandString.compare("update") == 0)
+    {
+        psendMsg->commandID = NOSQL_DATABASE_UPDATE;
+        error = commandstream.good();
+    }
+    else if(commandString.compare("list") == 0)
+    {
+        psendMsg->commandID = NOSQL_DATABASE_LIST;
+        error = false;
+    }
+    else
+    {
+        cout << "open No arguments" << endl;
+        cout << "      opens a new connection"<<endl;
+        cout << "add {itemname} {description} {price}" << endl;
+        cout << "      adds an item with the given specification"<<endl;
+        cout << "list" << endl;
+        cout << "      lists all the items"<<endl;
+    }
+    
+    return error;
 }

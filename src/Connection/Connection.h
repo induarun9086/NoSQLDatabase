@@ -10,6 +10,9 @@
 
 #include <string>
 
+#include "../Item/Item.h"
+
+
 using namespace std;
 
 class Connection {
@@ -20,9 +23,9 @@ public:
 	virtual ~Connection();
 
 public:
-	void getItem();
-	void addItem();
-	void updateItem();
+	//void getItem();
+	void addItem(Item* item);
+	//void updateItem();
 	//int registerEvent(string);
 	//void unregisterEvent(int);
 };
