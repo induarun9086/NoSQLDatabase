@@ -58,12 +58,6 @@ bool cIPCIntf::openIf(string ifName, int openMode)
         }
         else
         {
-          cout << "Waiting to connection from clients..." << endl;
-           
-          /* Try to connect to the opened pipe, this is succeed when there are 
-             clients listening to this pipe */
-          ConnectNamedPipe(hPipe, NULL);
-            
           /* Interface opened */
           ifState = true;
         }
@@ -102,7 +96,7 @@ bool cIPCIntf::openIf(string ifName, int openMode)
       hPipe = CreateFile(filePath.c_str(), GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
       /* If not opened wait and retry in loop */
-      while(hPipe == INVALID_HANDLE_VALUE)
+      while((hPipe == INVALID_HANDLE_VALUE) && (numTries < 1200))
       {
         /* If error is not pipe busy, exit loop */
         if(GetLastError() != ERROR_PIPE_BUSY)
@@ -134,6 +128,7 @@ bool cIPCIntf::openIf(string ifName, int openMode)
         /* Interface opened */
         ifState = true;
       }
+      
 #elif _OS_MAC_X_        
      
       hOpFile = open(ipFilePath.c_str(), O_WRONLY);
@@ -155,6 +150,48 @@ bool cIPCIntf::openIf(string ifName, int openMode)
     }
     
     return ifState;
+}
+
+bool cIPCIntf::connectIf(void)
+{
+    bool connected = FALSE;
+    
+#if _OS_WINDOWS_
+    
+    /* Open as server */
+    if(mode == CIPCINTF_OPEN_MODE_SERVER)
+    { 
+        /* Try to connect to the opened pipe, this is succeed when there are 
+           clients listening to this pipe */
+        connected = ConnectNamedPipe(hPipe, NULL);
+        
+        /* If not connected */
+        if(!connected)
+        {
+            cout << "Connect To Named Pipe failed err:" << GetLastError() << endl;
+        }
+
+#endif
+        
+    }
+    
+    return connected;
+}
+
+void cIPCIntf::disConnectIf(void)
+{
+    
+#if _OS_WINDOWS_
+    
+    /* Open as server */
+    if(mode == CIPCINTF_OPEN_MODE_SERVER)
+    { 
+        /* Disconnect the named pipe from the client */
+        DisconnectNamedPipe(hPipe);
+    }
+    
+#endif
+    
 }
 
 void cIPCIntf::closeIf()
@@ -184,41 +221,46 @@ void cIPCIntf::closeIf()
 
 bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
 {
-  bool msgAvai = true;
+  bool msgAvai = false;
+  unsigned int retSize = 0;
+  int err = 0;
     
 #if _OS_WINDOWS_
   
-  unsigned int ipSize = 0;
-
-  msgAvai = ReadFile(hPipe, pIPCMsg, sizeof(ipcMsg), &ipSize, NULL);
-  
-  cout << "ReadFile " << msgAvai << ", " << ipSize << "/" << sizeof(ipcMsg) << ", " << GetLastError() << endl;
+  msgAvai = ReadFile(hPipe, pIPCMsg, sizeof(ipcMsg), &retSize, NULL);
+  err = GetLastError();
   
 #elif _OS_MAC_X_
-
-  int retSize;
   
   retSize = read(hIpFile, pIPCMsg, sizeof(ipcMsg));
+  msgAvai = ((retSize >= sizeof(ipcMsg))?(true):(false));
+  err = errno;
   
 #endif
+  
+  cout << "getMsg " << msgAvai << ", " << retSize << "/" << sizeof(ipcMsg) << ", " << err << endl;
   
   return msgAvai;
 }
 
 void cIPCIntf::sendMsg(ipcMsg* pIPCMsg)
 {
+    bool msgSent = false;
+    unsigned int sentSize = 0;
+    int err = 0;
     
 #if _OS_WINDOWS_
     
-  unsigned int opSize = 0;
-    
-  WriteFile(hPipe, pIPCMsg, sizeof(ipcMsg), &opSize, NULL);
+  msgSent = WriteFile(hPipe, pIPCMsg, sizeof(ipcMsg), &sentSize, NULL);
+  err = GetLastError();
   
 #elif _OS_MAC_X_
   
-  int retSize;
-  
-  retSize = write(hOpFile, pIPCMsg, sizeof(ipcMsg));
+  sentSize = write(hOpFile, pIPCMsg, sizeof(ipcMsg));
+  msgSent  = ((sentSize >= sizeof(ipcMsg))?(true):(false));
+  err = errno;
   
 #endif
+  
+  cout << "sendMsg " << msgSent << ", " << sentSize << "/" << sizeof(ipcMsg) << ", " << err << endl;
 }

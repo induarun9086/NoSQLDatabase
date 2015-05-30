@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/Connection/Connection.o \
 	${OBJECTDIR}/src/Item/Item.o \
+	${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o \
 	${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o \
 	${OBJECTDIR}/src/ipc/ipc.o \
 	${OBJECTDIR}/src/main.o
@@ -75,6 +76,11 @@ ${OBJECTDIR}/src/Item/Item.o: src/Item/Item.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Item
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Item/Item.o src/Item/Item.cpp
+
+${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o: src/KeyValueStore/KeyValueStore.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/KeyValueStore
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o src/KeyValueStore/KeyValueStore.cpp
 
 ${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o: src/NoSQLStore/NoSQLStore.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/NoSQLStore

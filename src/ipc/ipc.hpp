@@ -50,6 +50,8 @@ public:
     cIPCIntf(void);
     ~cIPCIntf(void);
     bool openIf(string ifName, int openMode);
+    bool connectIf(void);
+    void disConnectIf(void);
     void closeIf(void);
     bool getMsg(struct ipcMsg* pIPCMsg);
     void sendMsg(struct ipcMsg* pIPCMsg);

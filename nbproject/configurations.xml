@@ -26,6 +26,12 @@
         <itemPath>src/Item/Item.cpp</itemPath>
         <itemPath>src/Item/Item.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="KeyValueStore"
+                     displayName="KeyValueStore"
+                     projectFiles="true">
+        <itemPath>src/KeyValueStore/KeyValueStore.cpp</itemPath>
+        <itemPath>src/KeyValueStore/KeyValueStore.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="NoSQLStore" displayName="NoSQLStore" projectFiles="true">
         <itemPath>src/NoSQLStore/NoSQLStore.cpp</itemPath>
         <itemPath>src/NoSQLStore/NoSQLStore.h</itemPath>
@@ -62,6 +68,9 @@
             <pElem>C:/Program Files/boost_1_58_0</pElem>
           </incDir>
         </ccTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql</output>
+        </linkerTool>
       </compileType>
       <item path="src/Connection/Connection.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -70,6 +79,13 @@
       <item path="src/Item/Item.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Item/Item.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/KeyValueStore/KeyValueStore.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/KeyValueStore/KeyValueStore.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/NoSQLStore/NoSQLStore.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -111,6 +127,13 @@
       <item path="src/Item/Item.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Item/Item.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/KeyValueStore/KeyValueStore.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/KeyValueStore/KeyValueStore.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/NoSQLStore/NoSQLStore.cpp" ex="false" tool="1" flavor2="0">
       </item>

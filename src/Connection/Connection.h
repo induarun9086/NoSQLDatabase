@@ -9,7 +9,7 @@
 #define SRC_CONNECTION_CONNECTION_H_
 
 #include <string>
-
+#include <stdexcept> 
 #include "../Item/Item.h"
 
 

@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/Connection/Connection.o \
 	${OBJECTDIR}/src/Item/Item.o \
+	${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o \
 	${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o \
 	${OBJECTDIR}/src/ipc/ipc.o \
 	${OBJECTDIR}/src/main.o
@@ -60,11 +61,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosqldatabase.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosqldatabase.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosqldatabase ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/src/Connection/Connection.o: src/Connection/Connection.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Connection
@@ -75,6 +76,11 @@ ${OBJECTDIR}/src/Item/Item.o: src/Item/Item.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Item
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/cygdrive/C/Program\ Files/boost_1_58_0 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Item/Item.o src/Item/Item.cpp
+
+${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o: src/KeyValueStore/KeyValueStore.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/KeyValueStore
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/cygdrive/C/Program\ Files/boost_1_58_0 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o src/KeyValueStore/KeyValueStore.cpp
 
 ${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o: src/NoSQLStore/NoSQLStore.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/NoSQLStore
@@ -97,7 +103,7 @@ ${OBJECTDIR}/src/main.o: src/main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosqldatabase.exe
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql.exe
 
 # Subprojects
 .clean-subprojects:
