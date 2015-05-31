@@ -30,7 +30,6 @@ public:
     void addItem(Item* item);
     void manipulateItem(string key, string value);
     void listItems();
-    void persist(string path);
     string serializeItem(Item* item);
     void deSerializeItem(string item);
     void loadDataToFile();

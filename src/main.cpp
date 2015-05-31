@@ -80,6 +80,8 @@ void doServerProcess() {
         /* Open a new NoSQLStore */
         NoSQLStore* pNoSqlStore = new NoSQLStore();
         
+        pNoSqlStore->keyValueStore->loadDataToMap();
+        
         /* While we can connect to at-least one client */
         while (ipcIf->connectIf()) {
 

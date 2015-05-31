@@ -54,15 +54,32 @@ void KeyValueStore::loadDataToFile() {
     cout << "load file called";
     ofstream newFile("data.txt");
     for (iter = dataMap.begin(); iter != dataMap.end(); ++iter) {
-        newFile << iter->first << " : " << iter->second
-                << endl;
+        newFile << iter->first << ";" << iter->second;
     }
     newFile.close();
 }
 
 void KeyValueStore::loadDataToMap() {
-    ofstream outfile;
-    //outfile.open("afile.dat");
+    ifstream file("data.txt");
+    
+    char delimiter = ';';
+    if (file.good()) {
+        std::string str;
+        
+        while (std::getline(file, str)) {
+            istringstream ss(str);
+            string key;
+            string value;
+            getline(ss,key,delimiter);
+            getline(ss,value,delimiter);
+            dataMap[atoi(key.c_str())] = value;
+        }
+    }
+        map<int, string>::iterator iter;
+
+     for (iter = dataMap.begin(); iter != dataMap.end(); ++iter) {
+        cout << iter->first << " : " << iter->second << endl;
+    }
 }
 
 void KeyValueStore::addItem(Item* item) {
