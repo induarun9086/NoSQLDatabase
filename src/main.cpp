@@ -70,6 +70,7 @@ void doServerProcess() {
     cIPCIntf* ipcIf = new cIPCIntf();
     struct ipcMsg rcvdMsg;
     struct ipcMsg sendMsg;
+    bool noMoreClients = false;
 
     cout << "Server Start Up...." << endl;
 
@@ -88,11 +89,16 @@ void doServerProcess() {
             /* Get the next message from the connected client */
             if (ipcIf->getMsg(&rcvdMsg)) {
                 /* Handle the received messages from the connected client in the server */
-                handleServerCommands(pNoSqlStore, rcvdMsg, &sendMsg);
+                noMoreClients = handleServerCommands(pNoSqlStore, rcvdMsg, &sendMsg);
                 /* Send reply to the connected client */
                 ipcIf->sendMsg(&sendMsg);
                 /* Disconnect the client interface */
                 ipcIf->disConnectIf();
+            }
+            
+            if(noMoreClients == true)
+            {
+                break;
             }
         }
         
@@ -154,7 +160,9 @@ void doClientProcess() {
     ipcIf->closeIf(true);
 }
 
-void handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct ipcMsg* pSendMsg) {
+bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct ipcMsg* pSendMsg) {
+    
+    bool noMoreClients = false;
     int commandID    = rcvdMsg.commandID;
     int connectionID = rcvdMsg.connectionID;
     
@@ -177,6 +185,11 @@ void handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             cout << "Close Request has been received from the client : " << connectionID << endl;
             pNoSqlStore->closeConnection(connectionID);
             pSendMsg->replyStatus = 0;
+            
+            if(pNoSqlStore->numberOfConnections == 0)
+            {
+                noMoreClients = true;
+            }
         }
             break;
         
@@ -229,6 +242,8 @@ void handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             cout << "Unknown command" << " from client" << endl;
             pSendMsg->replyStatus = 1;
     }
+    
+    return noMoreClients;
 }
 
 bool handleClientCommands(struct ipcMsg rcvdMsg, int* pConId) {
