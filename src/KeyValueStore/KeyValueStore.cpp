@@ -51,7 +51,6 @@ void KeyValueStore::deSerializeItem(string itemString) {
 
 void KeyValueStore::loadDataToFile() {
     map<int, string>::iterator iter;
-    cout << "load file called";
     ofstream newFile("data.txt");
     for (iter = dataMap.begin(); iter != dataMap.end(); ++iter) {
         newFile << iter->first << ";" << iter->second;

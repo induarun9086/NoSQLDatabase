@@ -19,6 +19,7 @@ using namespace std;
 class NoSQLStore {
 public:
 	int numberOfConnections;
+        int nextConnectionId;
         map<int,Connection*> connectionMap;
         KeyValueStore* keyValueStore;
 

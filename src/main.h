@@ -27,7 +27,7 @@ using namespace std;
 
 bool parseCommand(string command,struct ipcMsg* psendMsg);
 void doServerProcess();
-void handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct ipcMsg* pSendMsg);
+bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct ipcMsg* pSendMsg);
 void doClientProcess();
 bool handleClientCommands(struct ipcMsg rcvdMsg, int* pConId);
 
