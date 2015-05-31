@@ -13,20 +13,28 @@
 
 using namespace std;
 
+#include <map>
+
 class KeyValueStore {
 public:
     int numberOfItems;
+    map<int, string> dataMap;
+    
 public:
     KeyValueStore();
     KeyValueStore(const KeyValueStore& orig);
     virtual ~KeyValueStore();
+    
 public:
     void intialize(string path);
     void addItem(Item* item);
-    void manipulateItem (string key,string value);
+    void manipulateItem(string key, string value);
     void listItems();
     void persist(string path);
-    void serializeItem(Item* item);
+    string serializeItem(Item* item);
+    void deSerializeItem(string item);
+    void loadDataToFile();
+    void loadDataToMap();
 };
 
 #endif	/* KEYVALUESTORE_H */

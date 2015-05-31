@@ -11,15 +11,16 @@
 #include <string>
 #include <stdexcept> 
 #include "../Item/Item.h"
-
+#include "../KeyValueStore/KeyValueStore.h"
 
 using namespace std;
 
 class Connection {
 public:
 	int connectionID;
+        KeyValueStore* keyValueStore;
 public:
-	Connection(int connectionID);
+	Connection(int cID,KeyValueStore* keyValueStore);
 	virtual ~Connection();
 
 public:

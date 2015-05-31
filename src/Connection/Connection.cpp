@@ -11,9 +11,9 @@
 
 
 
-Connection::Connection(int connectionID) {
-	// TODO Auto-generated constructor stub
-
+Connection::Connection(int cID,KeyValueStore* kvStore) {
+    connectionID = cID;
+    keyValueStore = kvStore;
 }
 
 Connection::~Connection() {
@@ -22,7 +22,6 @@ Connection::~Connection() {
 
 void Connection::addItem(Item* item)
 {
-    KeyValueStore* keyValueStore = new KeyValueStore();
     keyValueStore->addItem(item);
 }
 

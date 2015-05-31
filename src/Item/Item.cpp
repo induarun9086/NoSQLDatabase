@@ -101,6 +101,10 @@ void Item::manipulateItem() {
         std::cout << "Value has been changed successfully" << std::endl;
 }*/
 
+void Item::setItemID(int id)
+{
+    itemID =id;
+}
 void Item::setName(string name) {
     itemName = name;
 }
@@ -111,6 +115,10 @@ void Item::setDescription(string description) {
 
 void Item::setPrice(double price) {
     itemPrice = price;
+}
+
+int Item::getItemID() {
+    return itemID;
 }
 
 string Item::getName() {

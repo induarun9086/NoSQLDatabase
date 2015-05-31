@@ -9,10 +9,13 @@
 
 NoSQLStore::NoSQLStore() {
     numberOfConnections = 0;
+    keyValueStore = new KeyValueStore();
+    keyValueStore->numberOfItems = 0;
+    
 }
 
 int NoSQLStore::openConnection() {
-    Connection* connection = new Connection(numberOfConnections);
+    Connection* connection = new Connection(numberOfConnections,keyValueStore);
     connectionMap[numberOfConnections] = connection;
     numberOfConnections++;
     return numberOfConnections - 1;
@@ -28,12 +31,11 @@ Connection* NoSQLStore::getConnection(int connectionID) {
 
 void NoSQLStore::closeConnection(int connectionID) {
     connectionMap.erase(connectionID);
+
 }
 
 KeyValueStore* NoSQLStore::getKeyValueStore() {
-
-    return new KeyValueStore();
-
+    return keyValueStore;
 }
 
 NoSQLStore::~NoSQLStore() {

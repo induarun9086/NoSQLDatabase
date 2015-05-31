@@ -20,6 +20,7 @@ class NoSQLStore {
 public:
 	int numberOfConnections;
         map<int,Connection*> connectionMap;
+        KeyValueStore* keyValueStore;
 
 public:
 	NoSQLStore();

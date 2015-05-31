@@ -95,10 +95,13 @@ void doServerProcess() {
                 ipcIf->disConnectIf();
             }
         }
+        
+        pNoSqlStore->getKeyValueStore()->loadDataToFile();
 
         cout << "Server Shutdown...." << endl;
         /* Close before exit */
         ipcIf->closeIf(true);
+        
     }
 }
 

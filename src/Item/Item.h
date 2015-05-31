@@ -15,6 +15,7 @@ using namespace std;
 
 class Item {
 private:
+    int itemID;
     string itemName;
     string itemDescription;
     double itemPrice;
@@ -23,6 +24,8 @@ public:
     Item();
 
 public:
+    void setItemID(int id);
+    int getItemID();
     void setName(string name);
     string getName();
     void setDescription(string description);
