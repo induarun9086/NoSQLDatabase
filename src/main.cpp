@@ -98,7 +98,7 @@ void doServerProcess() {
 
         cout << "Server Shutdown...." << endl;
         /* Close before exit */
-        ipcIf->closeIf();
+        ipcIf->closeIf(true);
     }
 }
 
@@ -134,7 +134,7 @@ void doClientProcess() {
                 /* Handle the received reply from server */
                 closed = handleClientCommands(rcvdMsg, &connectionID);
                 /* Close IPC */
-                ipcIf->closeIf();
+                ipcIf->closeIf(false);
                 
                 if(closed)
                 {
@@ -146,6 +146,9 @@ void doClientProcess() {
             }
         }
     }
+    
+    /* Close IPC */
+    ipcIf->closeIf(true);
 }
 
 void handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct ipcMsg* pSendMsg) {

@@ -52,13 +52,14 @@ public:
     bool openIf(string ifName, int openMode);
     bool connectIf(void);
     void disConnectIf(void);
-    void closeIf(void);
+    void closeIf(bool final);
     bool getMsg(struct ipcMsg* pIPCMsg);
     void sendMsg(struct ipcMsg* pIPCMsg);
     
 private:
     bool ifState;
     int  mode;
+    int  err;
     
 #if _OS_WINDOWS_
   string filePath;

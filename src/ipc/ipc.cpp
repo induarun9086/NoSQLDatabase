@@ -23,8 +23,7 @@ bool cIPCIntf::openIf(string ifName, int openMode)
     int numTries = 0;
 #endif
     
-    /* Assume as the interface is not opened */
-    ifState = false;
+    /* Copy and save the mode */
     mode    = openMode;
     
 #if _OS_WINDOWS_
@@ -131,20 +130,24 @@ bool cIPCIntf::openIf(string ifName, int openMode)
       
 #elif _OS_MAC_X_        
      
-      hOpFile = open(ipFilePath.c_str(), O_WRONLY);
-      hIpFile = open(opFilePath.c_str(), O_RDONLY);
-      
-      cout << "ip:" << hIpFile << "op:" << hOpFile << endl;
+      if(ifState == false) 
+      {
+        hOpFile = open(ipFilePath.c_str(), O_WRONLY);
+        hIpFile = open(opFilePath.c_str(), O_RDONLY);
 
-      if((hIpFile != -1) && (hOpFile != -1))
-      {
-          /* Interface opened */
-          ifState = true;
-      }
-      else
-      {
-          cout << "Couldn't open the pipe for communication err:" << strerror(errno) << "(" << errno << ")" << endl;
-      }
+        cout << "ip:" << hIpFile << "op:" << hOpFile << endl;
+
+        if((hIpFile != -1) && (hOpFile != -1))
+        {
+            /* Interface opened */
+            ifState = true;
+        }
+        else
+        {
+            cout << "Couldn't open the pipe for communication err:" << strerror(errno) << "(" << errno << ")" << endl;
+        }
+      }  
+      
 #endif
         
     }
@@ -154,7 +157,7 @@ bool cIPCIntf::openIf(string ifName, int openMode)
 
 bool cIPCIntf::connectIf(void)
 {
-    bool connected = FALSE;
+    bool connected = false;
     
 #if _OS_WINDOWS_
     
@@ -170,11 +173,17 @@ bool cIPCIntf::connectIf(void)
         {
             cout << "Connect To Named Pipe failed err:" << GetLastError() << endl;
         }
-
-#endif
-        
     }
     
+#elif _OS_MAC_X_ 
+    
+    if(err == 0)
+    {
+        connected = true;
+    }
+    
+#endif
+        
     return connected;
 }
 
@@ -194,7 +203,7 @@ void cIPCIntf::disConnectIf(void)
     
 }
 
-void cIPCIntf::closeIf()
+void cIPCIntf::closeIf(bool final)
 {
     
 #if _OS_WINDOWS_
@@ -205,15 +214,20 @@ void cIPCIntf::closeIf()
   
 #elif _OS_MAC_X_
   
-  close(hIpFile);
-  close(hOpFile);
-
-  if(mode == CIPCINTF_OPEN_MODE_SERVER)
+  if(final == true)
   {
-    /* remove the FIFO */
-    unlink(ipFilePath.c_str());
-    unlink(opFilePath.c_str());
-  }
+    close(hIpFile);
+    close(hOpFile);
+
+    if(mode == CIPCINTF_OPEN_MODE_SERVER)
+    {
+      /* remove the FIFO */
+      unlink(ipFilePath.c_str());
+      unlink(opFilePath.c_str());
+    }
+    
+    ifState = false;
+  } 
   
 #endif
   
@@ -223,7 +237,6 @@ bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
 {
   bool msgAvai = false;
   unsigned int retSize = 0;
-  int err = 0;
     
 #if _OS_WINDOWS_
   
@@ -234,7 +247,7 @@ bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
   
   retSize = read(hIpFile, pIPCMsg, sizeof(ipcMsg));
   msgAvai = ((retSize >= sizeof(ipcMsg))?(true):(false));
-  err = errno;
+  err = ((msgAvai == true)?(0):(((errno == 0)?(-1):(errno))));
   
 #endif
   
@@ -247,7 +260,6 @@ void cIPCIntf::sendMsg(ipcMsg* pIPCMsg)
 {
     bool msgSent = false;
     unsigned int sentSize = 0;
-    int err = 0;
     
 #if _OS_WINDOWS_
     
@@ -258,7 +270,7 @@ void cIPCIntf::sendMsg(ipcMsg* pIPCMsg)
   
   sentSize = write(hOpFile, pIPCMsg, sizeof(ipcMsg));
   msgSent  = ((sentSize >= sizeof(ipcMsg))?(true):(false));
-  err = errno;
+  err = ((msgSent == true)?(0):(((errno == 0)?(-1):(errno))));
   
 #endif
   
