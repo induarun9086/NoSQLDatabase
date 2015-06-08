@@ -24,9 +24,10 @@ public:
 	virtual ~Connection();
 
 public:
-	//void getItem();
+	string getItem(int itemID);
 	void addItem(Item* item);
-	//void updateItem();
+	void updateItem(Item* item);
+        string listItem();
 	//int registerEvent(string);
 	//void unregisterEvent(int);
 };

@@ -39,20 +39,31 @@ bool parseCommand(string command, struct ipcMsg* psendMsg) {
     if (commandString.compare("open") == 0) {
         psendMsg->commandID = NOSQL_DATABASE_OPEN_CONNECTION;
         error = false;
-    } else if (commandString.compare("add") == 0) {
+    }
+    else if (commandString.compare("add") == 0) {
         psendMsg->commandID = NOSQL_DATABASE_ADD;
         commandstream >> psendMsg->itemName >> psendMsg->description >> psendMsg->price;
         error = commandstream.good();
-    } else if (commandString.compare("update") == 0) {
+    }
+    else if (commandString.compare("update") == 0) {
         psendMsg->commandID = NOSQL_DATABASE_UPDATE;
-        error = false;
-    } else if (commandString.compare("list") == 0) {
+        commandstream >> psendMsg->itemID >> psendMsg->itemName >> psendMsg->description >> psendMsg->price;
+        error = commandstream.good();
+    }
+    else if (commandString.compare("list") == 0) {
         psendMsg->commandID = NOSQL_DATABASE_LIST;
         error = false;
-    } else if (commandString.compare("close") == 0) {
+    }
+    else if (commandString.compare("details") == 0) {
+        psendMsg->commandID = NOSQL_DATABASE_DETAILS;
+        commandstream >> psendMsg->itemID;
+        error = commandstream.good();
+    }
+    else if (commandString.compare("close") == 0) {
         psendMsg->commandID = NOSQL_DATABASE_CLOSE_CONNECTION;
         error = false;
-    } else {
+    }
+    else {
         cout << " -> open {void}" << endl;
         cout << "      Opens a new connection with the server" << endl;
         cout << " -> add {itemname} {description} {price}" << endl;
@@ -80,14 +91,14 @@ void doServerProcess() {
         cout << "IPC Opened, waiting for messages...." << endl;
         /* Open a new NoSQLStore */
         NoSQLStore* pNoSqlStore = new NoSQLStore();
-        
+
         pNoSqlStore->keyValueStore->loadDataToMap();
-        
+
         /* While we can connect to at-least one client */
         while (ipcIf->connectIf()) {
 
             cout << endl;
-            
+
             /* Get the next message from the connected client */
             if (ipcIf->getMsg(&rcvdMsg)) {
                 /* Handle the received messages from the connected client in the server */
@@ -97,19 +108,18 @@ void doServerProcess() {
                 /* Disconnect the client interface */
                 ipcIf->disConnectIf();
             }
-            
-            if(noMoreClients == true)
-            {
+
+            if (noMoreClients == true) {
                 break;
             }
         }
-        
+
         pNoSqlStore->getKeyValueStore()->loadDataToFile();
 
         cout << "Server Shutdown...." << endl;
         /* Close before exit */
         ipcIf->closeIf(true);
-        
+
     }
 }
 
@@ -139,16 +149,16 @@ void doClientProcess() {
             sendMsg.connectionID = connectionID;
             /* Send message to server */
             ipcIf->sendMsg(&sendMsg);
-            
+
             /* Read message from server */
             if (ipcIf->getMsg(&rcvdMsg)) {
+                
                 /* Handle the received reply from server */
                 closed = handleClientCommands(rcvdMsg, &connectionID);
                 /* Close IPC */
                 ipcIf->closeIf(false);
-                
-                if(closed)
-                {
+
+                if (closed) {
                     break;
                 }
             } else {
@@ -157,19 +167,19 @@ void doClientProcess() {
             }
         }
     }
-    
+
     /* Close IPC */
     ipcIf->closeIf(true);
 }
 
 bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct ipcMsg* pSendMsg) {
-    
+
     bool noMoreClients = false;
-    int commandID    = rcvdMsg.commandID;
+    int commandID = rcvdMsg.commandID;
     int connectionID = rcvdMsg.connectionID;
-    
-    pSendMsg->replyStatus  = 1;
-    pSendMsg->commandID    = commandID;
+
+    pSendMsg->replyStatus = 1;
+    pSendMsg->commandID = commandID;
     pSendMsg->connectionID = connectionID;
 
     switch (commandID) {
@@ -181,20 +191,19 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             cout << "Open Request has been received from the client : " << pSendMsg->connectionID << endl;
         }
             break;
-            
+
         case NOSQL_DATABASE_CLOSE_CONNECTION:
         {
             cout << "Close Request has been received from the client : " << connectionID << endl;
             pNoSqlStore->closeConnection(connectionID);
             pSendMsg->replyStatus = 0;
-            
-            if(pNoSqlStore->numberOfConnections == 0)
-            {
+
+            if (pNoSqlStore->numberOfConnections == 0) {
                 noMoreClients = true;
             }
         }
             break;
-        
+
         case NOSQL_DATABASE_ADD:
         {
             cout << "Add Item Request has been received from the client : " << connectionID << endl;
@@ -212,7 +221,12 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
         {
             cout << "Update Item Request has been received from the client : " << connectionID << endl;
             Connection* connection = pNoSqlStore->getConnection(connectionID);
-            //connection->updateItem();
+            Item* item = new Item();
+            item->setItemID(rcvdMsg.itemID);
+            item->setName(rcvdMsg.itemName);
+            item->setDescription(rcvdMsg.description);
+            item->setPrice(rcvdMsg.price);
+            connection->updateItem(item);
             pSendMsg->replyStatus = 0;
         }
             break;
@@ -221,21 +235,32 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
         {
             cout << "List Item Request has been received from the client : " << connectionID << endl;
             Connection* connection = pNoSqlStore->getConnection(connectionID);
-            //connection->getItem();
+            string returnValue = connection->listItem();
+            pSendMsg->returnValue = returnValue;
+            pSendMsg->replyStatus = 0;
+        }
+            break;
+
+        case NOSQL_DATABASE_DETAILS:
+        {
+            cout << "Details Item Request has been received from the client : " << connectionID << endl;
+            Connection* connection = pNoSqlStore->getConnection(connectionID);
+            string returnValue = connection->getItem(rcvdMsg.itemID);
+            pSendMsg->returnValue = returnValue;
             pSendMsg->replyStatus = 0;
         }
             break;
 
         case NOSQL_DATABASE_ADD_EVENT:
         {
-             cout << "Add Event Request has been received from the client : " << connectionID << endl;
+            cout << "Add Event Request has been received from the client : " << connectionID << endl;
             pSendMsg->replyStatus = 1;
         }
             break;
 
         case NOSQL_DATABASE_REMOVE_EVENT:
         {
-             cout << "Remove Event Request has been received from the client : " << connectionID << endl;
+            cout << "Remove Event Request has been received from the client : " << connectionID << endl;
             pSendMsg->replyStatus = 1;
         }
             break;
@@ -244,13 +269,13 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             cout << "Unknown command" << " from client" << endl;
             pSendMsg->replyStatus = 1;
     }
-    
+
     return noMoreClients;
 }
 
 bool handleClientCommands(struct ipcMsg rcvdMsg, int* pConId) {
     bool closed = false;
-    
+
     switch (rcvdMsg.commandID) {
 
         case NOSQL_DATABASE_OPEN_CONNECTION:
@@ -258,7 +283,7 @@ bool handleClientCommands(struct ipcMsg rcvdMsg, int* pConId) {
             cout << "Connection ID is  " << rcvdMsg.connectionID << endl;
             *pConId = rcvdMsg.connectionID;
             break;
-            
+
         case NOSQL_DATABASE_CLOSE_CONNECTION:
             cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
             closed = true;
@@ -274,11 +299,19 @@ bool handleClientCommands(struct ipcMsg rcvdMsg, int* pConId) {
 
         case NOSQL_DATABASE_LIST:
             cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
+            cout << rcvdMsg.returnValue;
             break;
+            
+        case NOSQL_DATABASE_DETAILS:
+        {
+            cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
+            cout << rcvdMsg.returnValue;
+            break;
+        }
 
         default:
             cout << "Unknown message from Server" << endl;
     }
-    
+
     return closed;
 }

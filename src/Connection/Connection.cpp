@@ -25,15 +25,18 @@ void Connection::addItem(Item* item)
     keyValueStore->addItem(item);
 }
 
-/*void Connection::updateItem()
+void Connection::updateItem(Item* item)
 {
-    Item* i = new Item();
-    //i->manipulateItem();
+    keyValueStore->manipulateItem(item);
 }
 
-void Connection::getItem()
+string Connection::getItem(int itemID)
 {
-    Item* i = new Item();
-    //i->showItem();
-}*/
+    return keyValueStore->getItem(itemID);
+}
+
+string Connection::listItem()
+{
+    return keyValueStore->listItems();
+}
 

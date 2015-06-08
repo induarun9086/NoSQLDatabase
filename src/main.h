@@ -24,6 +24,8 @@ using namespace std;
 #define NOSQL_DATABASE_CLOSE_CONNECTION ((int)4)
 #define NOSQL_DATABASE_ADD_EVENT ((int)5)
 #define NOSQL_DATABASE_REMOVE_EVENT ((int)6)
+#define NOSQL_DATABASE_DETAILS ((int) 7)
+
 
 bool parseCommand(string command,struct ipcMsg* psendMsg);
 void doServerProcess();

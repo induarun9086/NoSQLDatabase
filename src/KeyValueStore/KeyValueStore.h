@@ -19,6 +19,7 @@ class KeyValueStore {
 public:
     int numberOfItems;
     map<int, string> dataMap;
+    int lastItemID;
     
 public:
     KeyValueStore();
@@ -26,12 +27,11 @@ public:
     virtual ~KeyValueStore();
     
 public:
-    void intialize(string path);
     void addItem(Item* item);
-    void manipulateItem(string key, string value);
-    void listItems();
+    void manipulateItem(Item* item);
+    string getItem(int itemID);
+    string listItems();
     string serializeItem(Item* item);
-    void deSerializeItem(string item);
     void loadDataToFile();
     void loadDataToMap();
 };

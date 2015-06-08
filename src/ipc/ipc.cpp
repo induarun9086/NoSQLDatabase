@@ -248,7 +248,7 @@ bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
   retSize = read(hIpFile, pIPCMsg, sizeof(ipcMsg));
   msgAvai = ((retSize >= sizeof(ipcMsg))?(true):(false));
   err = ((msgAvai == true)?(0):(((errno == 0)?(-1):(errno))));
-  
+
 #endif
   
   cout << "getMsg " << msgAvai << ", " << retSize << "/" << sizeof(ipcMsg) << ", " << err << endl;

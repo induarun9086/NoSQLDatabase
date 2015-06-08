@@ -27,6 +27,7 @@ KeyValueStore::~KeyValueStore() {
 
 string KeyValueStore::serializeItem(Item* item) {
     ptree pt;
+    pt.put("itemid", item->getItemID());
     pt.put("name", item->getName());
     pt.put("description", item->getDescription());
     pt.put("price", item->getPrice());
@@ -37,16 +38,6 @@ string KeyValueStore::serializeItem(Item* item) {
     numberOfItems++;
     loadDataToFile();
     return json;
-}
-
-void KeyValueStore::deSerializeItem(string itemString) {
-    /* ptree pt;
-     boost::property_tree::read_json(itemString, pt, false);
-     Item i;
-     i.setName(pt.get_value("name"));
-     i.setDescription(pt.get_value("description"));
-     i.setPrice((double)pt.get_value("price"));*/
-
 }
 
 void KeyValueStore::loadDataToFile() {
@@ -60,30 +51,93 @@ void KeyValueStore::loadDataToFile() {
 
 void KeyValueStore::loadDataToMap() {
     ifstream file("data.txt");
-    
+
     char delimiter = ';';
     if (file.good()) {
         std::string str;
-        
         while (std::getline(file, str)) {
             istringstream ss(str);
             string key;
             string value;
-            getline(ss,key,delimiter);
-            getline(ss,value,delimiter);
+            getline(ss, key, delimiter);
+            getline(ss, value, delimiter);
+            cout << "key is " << atoi(key.c_str()) << endl;
             dataMap[atoi(key.c_str())] = value;
+            lastItemID = dataMap.rbegin()->first;
         }
+    } else {
+        lastItemID = 0;
     }
-        map<int, string>::iterator iter;
+    map<int, string>::iterator iter;
 
-     for (iter = dataMap.begin(); iter != dataMap.end(); ++iter) {
-        cout << iter->first << " : " << iter->second << endl;
+    for (iter = dataMap.begin(); iter != dataMap.end(); ++iter) {
+        cout << iter->first << ':' << iter->second << endl;
     }
 }
 
 void KeyValueStore::addItem(Item* item) {
-    item->setItemID(numberOfItems);
+    if (lastItemID != 0) {
+        lastItemID = lastItemID + 1;
+    }
+    item->setItemID(lastItemID);
+    lastItemID++;
     serializeItem(item);
+}
+
+void KeyValueStore::manipulateItem(Item* item) {
+    int itemID = item->getItemID();
+
+    string value = dataMap[itemID];
+    if (value.empty()) {
+        perror("Given ItemID does not exist");
+    }
+    serializeItem(item);
+}
+
+string KeyValueStore::getItem(int itemID) {
+    string value;
+    try {
+        map<int, string>::iterator pos;
+        pos = dataMap.find(itemID);
+
+        if (pos == dataMap.end()) {
+
+            value = "Item does not exists";
+
+        } else {
+            value = pos->second;
+        }
+
+    } catch (const exception& e) {
+
+        cout << "Error occured while retriving data" << endl;
+    }
+
+    return value;
+
+}
+
+string KeyValueStore::listItems() {
+    std::vector<string> list;
+    map<int, string>::iterator iter;
+
+    for (iter = dataMap.begin(); iter != dataMap.end(); ++iter) {
+        list.push_back(iter->second);
+    }
+
+    std::ostringstream oss;
+
+    if (!list.empty()) {
+        // Convert all but the last element to avoid a trailing ","
+        std::copy(list.begin(), list.end() - 1,
+                std::ostream_iterator<string>(oss, ","));
+
+        // Now add the last element with no delimiter
+        oss << list.back();
+    }
+
+    return oss.str();
+
 }
 
 

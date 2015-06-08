@@ -42,6 +42,7 @@ struct ipcMsg
     int quantity;
     double price; 
     int replyStatus;
+    string returnValue;
 };
 
 class cIPCIntf
