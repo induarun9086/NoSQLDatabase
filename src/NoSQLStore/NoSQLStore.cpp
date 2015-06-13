@@ -12,6 +12,7 @@ NoSQLStore::NoSQLStore() {
     nextConnectionId = 0;
     keyValueStore = new KeyValueStore();
     keyValueStore->numberOfItems = 0;
+    notificationCount = 0;
     
 }
 

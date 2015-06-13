@@ -22,6 +22,7 @@ public:
         int nextConnectionId;
         map<int,Connection*> connectionMap;
         KeyValueStore* keyValueStore;
+        int notificationCount;
 
 public:
 	NoSQLStore();

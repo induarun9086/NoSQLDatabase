@@ -8,16 +8,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/main.cpp</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/Item/Item.h</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/main.h</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/NoSQLStore/NoSQLStore.cpp</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/Connection/Connection.cpp</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/ipc/ipc.cpp</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/Connection/Connection.h</file>
             <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/Item/Item.cpp</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.h</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/KeyValueStore/KeyValueStore.cpp</file>
-            <file>file:/Users/indudinesh/Documents/indu/c++%20workspace/NoSQLDataBase/src/NoSQLStore/NoSQLStore.h</file>
         </group>
     </open-files>
 </project-private>

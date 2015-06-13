@@ -20,14 +20,14 @@ Connection::~Connection() {
 	// TODO Auto-generated destructor stub
 }
 
-void Connection::addItem(Item* item)
+string Connection::addItem(Item* item)
 {
-    keyValueStore->addItem(item);
+    return keyValueStore->addItem(item);
 }
 
-void Connection::updateItem(Item* item)
+string Connection::updateItem(Item* item)
 {
-    keyValueStore->manipulateItem(item);
+    return keyValueStore->manipulateItem(item);
 }
 
 string Connection::getItem(int itemID)

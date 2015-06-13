@@ -25,8 +25,8 @@ public:
 
 public:
 	string getItem(int itemID);
-	void addItem(Item* item);
-	void updateItem(Item* item);
+	string addItem(Item* item);
+	string updateItem(Item* item);
         string listItem();
 	//int registerEvent(string);
 	//void unregisterEvent(int);

@@ -57,7 +57,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lboost_system -lboost_timer-mt
+LDLIBSOPTIONS=-lboost_system -lboost_timer-mt -lboost_thread-mt
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

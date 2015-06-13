@@ -75,23 +75,23 @@ void KeyValueStore::loadDataToMap() {
     }
 }
 
-void KeyValueStore::addItem(Item* item) {
+string KeyValueStore::addItem(Item* item) {
     if (lastItemID != 0) {
         lastItemID = lastItemID + 1;
     }
     item->setItemID(lastItemID);
     lastItemID++;
-    serializeItem(item);
+    return serializeItem(item);
 }
 
-void KeyValueStore::manipulateItem(Item* item) {
+string KeyValueStore::manipulateItem(Item* item) {
     int itemID = item->getItemID();
 
     string value = dataMap[itemID];
     if (value.empty()) {
         perror("Given ItemID does not exist");
     }
-    serializeItem(item);
+    return serializeItem(item);
 }
 
 string KeyValueStore::getItem(int itemID) {

@@ -27,8 +27,8 @@ public:
     virtual ~KeyValueStore();
     
 public:
-    void addItem(Item* item);
-    void manipulateItem(Item* item);
+    string addItem(Item* item);
+    string manipulateItem(Item* item);
     string getItem(int itemID);
     string listItems();
     string serializeItem(Item* item);

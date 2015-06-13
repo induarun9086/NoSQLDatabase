@@ -67,6 +67,7 @@
           <linkerLibItems>
             <linkerLibLibItem>boost_system</linkerLibLibItem>
             <linkerLibLibItem>boost_timer-mt</linkerLibLibItem>
+            <linkerLibLibItem>boost_thread-mt</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

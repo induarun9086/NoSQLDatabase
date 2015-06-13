@@ -25,6 +25,8 @@ using namespace std;
 #define NOSQL_DATABASE_ADD_EVENT ((int)5)
 #define NOSQL_DATABASE_REMOVE_EVENT ((int)6)
 #define NOSQL_DATABASE_DETAILS ((int) 7)
+#define NOSQL_DATABASE_NOTIFY_ADD ((int) 8)
+#define NOSQL_DATABASE_NOTIFY_UPDATE ((int) 9)
 
 
 bool parseCommand(string command,struct ipcMsg* psendMsg);
