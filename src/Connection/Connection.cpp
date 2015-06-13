@@ -14,6 +14,8 @@
 Connection::Connection(int cID,KeyValueStore* kvStore) {
     connectionID = cID;
     keyValueStore = kvStore;
+    notifyAdd = false;
+    notifyUpdate = false;
 }
 
 Connection::~Connection() {
@@ -38,5 +40,21 @@ string Connection::getItem(int itemID)
 string Connection::listItem()
 {
     return keyValueStore->listItems();
+}
+
+void Connection::registerEvent(string event)
+{
+    if(event.compare("add") == 0)
+    {
+        notifyAdd = true;
+    }
+    else if(event.compare("update") == 0)
+    {
+        notifyUpdate = true;
+    }
+    else
+    {
+        throw std::invalid_argument( "Invalid event provided" );
+    }
 }
 

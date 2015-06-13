@@ -41,6 +41,7 @@ struct ipcMsg
     char description[512];
     int quantity;
     double price; 
+    char event[10];
     int replyStatus;
     string returnValue;
 };

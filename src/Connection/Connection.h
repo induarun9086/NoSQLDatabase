@@ -19,6 +19,9 @@ class Connection {
 public:
 	int connectionID;
         KeyValueStore* keyValueStore;
+        bool notifyAdd;
+        bool notifyUpdate;
+        //string updateElements[];
 public:
 	Connection(int cID,KeyValueStore* keyValueStore);
 	virtual ~Connection();
@@ -28,7 +31,7 @@ public:
 	string addItem(Item* item);
 	string updateItem(Item* item);
         string listItem();
-	//int registerEvent(string);
+	void registerEvent(string event);
 	//void unregisterEvent(int);
 };
 

@@ -20,27 +20,39 @@
 using namespace boost::interprocess;
 
 char* mem;
+int connectionID = -1;
 
 using namespace std;
 
 void notify_thread() {
-    int stringLength;
     int currentCount = 0;
+    struct notificationMsg* pNotificationMsg;
+    bool matchFound = false;
     while (1) {
-
+        matchFound = false;
         sleep(1);
-        if (currentCount != mem[1]) {
-            currentCount = mem[1];
 
+        pNotificationMsg = (struct notificationMsg*) &mem[0];
+        if (currentCount != pNotificationMsg->count) {
+            currentCount = pNotificationMsg->count;   
 
-            if (mem[0] == NOSQL_DATABASE_NOTIFY_ADD) {
+            for (int i = 0; i < pNotificationMsg->numberOfClients; i++)
+            {
+                if (connectionID == pNotificationMsg->connectionID[i]) {
+                    
+                    matchFound = true;
+                }
 
-                cout << "Item has been added" << endl << &mem[2] << endl << ">>";
             }
+            if (matchFound) {
+                if (pNotificationMsg->notificationID == NOSQL_DATABASE_NOTIFY_ADD) {
+                    cout << "Item has been added" << endl << &pNotificationMsg->itemDetails[0] << endl << ">>";
+                }
 
 
-            if (mem[0] == NOSQL_DATABASE_NOTIFY_UPDATE) {
-                cout << "Item has been updated" << endl << &mem[2] << endl << ">>";
+                if (pNotificationMsg->notificationID == NOSQL_DATABASE_NOTIFY_UPDATE) {
+                    cout << "Item has been updated" << endl << &pNotificationMsg->itemDetails[0] << endl << ">>";
+                }
             }
         }
 
@@ -72,8 +84,8 @@ int main(int argc, char* argv[]) {
             mem = static_cast<char*> (region.get_address());
             doServerProcess();
         } else /* Else in client mode */ {
-            shared_memory_object shm(open_only, "MySharedMemory", read_write);
-            mapped_region region(shm, read_write);
+            shared_memory_object shm(open_only, "MySharedMemory", read_only);
+            mapped_region region(shm, read_only);
             mem = static_cast<char*> (region.get_address());
             boost::thread workerThread(notify_thread);
             doClientProcess();
@@ -104,6 +116,11 @@ bool parseCommand(string command, struct ipcMsg* psendMsg) {
     } else if (commandString.compare("details") == 0) {
         psendMsg->commandID = NOSQL_DATABASE_DETAILS;
         commandstream >> psendMsg->itemID;
+        error = commandstream.good();
+    }
+    else if (commandString.compare("event") == 0) {
+        psendMsg->commandID = NOSQL_DATABASE_ADD_EVENT;
+        commandstream >> psendMsg->event;
         error = commandstream.good();
     } else if (commandString.compare("close") == 0) {
         psendMsg->commandID = NOSQL_DATABASE_CLOSE_CONNECTION;
@@ -175,7 +192,7 @@ void doClientProcess() {
     string command;
     bool error = false;
     bool closed = false;
-    int connectionID = -1;
+
 
     cout << "Client Start Up...." << endl;
 
@@ -222,6 +239,7 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
     bool noMoreClients = false;
     int commandID = rcvdMsg.commandID;
     int connectionID = rcvdMsg.connectionID;
+    struct notificationMsg notificationMsg;
 
     pSendMsg->replyStatus = 1;
     pSendMsg->commandID = commandID;
@@ -259,10 +277,13 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             item->setPrice(rcvdMsg.price);
             string addedItem = connection->addItem(item);
             pSendMsg->replyStatus = 0;
-            mem[0] = NOSQL_DATABASE_NOTIFY_ADD;
-            mem[1] = (char) (pNoSqlStore->notificationCount + 1);
+            notificationMsg.notificationID = NOSQL_DATABASE_NOTIFY_ADD;
+            notificationMsg.count = (char) (pNoSqlStore->notificationCount + 1);
             pNoSqlStore->notificationCount++;
-            strcpy(&mem[2], addedItem.c_str());
+            strcpy(&notificationMsg.itemDetails[0], addedItem.c_str());
+            notificationMsg.numberOfClients =
+                    pNoSqlStore->getRegisteredConnections(&notificationMsg.connectionID[0], NOSQL_DATABASE_NOTIFY_ADD);
+            memcpy(&mem[0], &notificationMsg, sizeof (notificationMsg));
         }
             break;
 
@@ -270,18 +291,23 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
         {
             cout << "Update Item Request has been received from the client : " << connectionID << endl;
             Connection* connection = pNoSqlStore->getConnection(connectionID);
+
             Item* item = new Item();
             item->setItemID(rcvdMsg.itemID);
             item->setName(rcvdMsg.itemName);
             item->setDescription(rcvdMsg.description);
             item->setPrice(rcvdMsg.price);
+
             string updatedItem = connection->updateItem(item);
-            cout << item->getDescription();
             pSendMsg->replyStatus = 0;
-            mem[0] = NOSQL_DATABASE_NOTIFY_UPDATE;
-            mem[1] = (char) (pNoSqlStore->notificationCount + 1);
-            pNoSqlStore->notificationCount++;            
-            strcpy(&mem[2], updatedItem.c_str());
+
+            notificationMsg.notificationID = NOSQL_DATABASE_NOTIFY_UPDATE;
+            notificationMsg.count = (char) (pNoSqlStore->notificationCount + 1);
+            pNoSqlStore->notificationCount++;
+            strcpy(&notificationMsg.itemDetails[0], updatedItem.c_str());
+            notificationMsg.numberOfClients =
+                    pNoSqlStore->getRegisteredConnections(&notificationMsg.connectionID[0], NOSQL_DATABASE_NOTIFY_UPDATE);
+            memcpy(&mem[0], &notificationMsg, sizeof (notificationMsg));
         }
             break;
 
@@ -308,6 +334,9 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
         case NOSQL_DATABASE_ADD_EVENT:
         {
             cout << "Add Event Request has been received from the client : " << connectionID << endl;
+            string event(rcvdMsg.event);
+            Connection* connection = pNoSqlStore->getConnection(connectionID);
+            connection->registerEvent(event);
             pSendMsg->replyStatus = 1;
         }
             break;
@@ -363,6 +392,9 @@ bool handleClientCommands(struct ipcMsg rcvdMsg, int* pConId) {
             break;
         }
 
+        case NOSQL_DATABASE_ADD_EVENT:
+            cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
+            break;
         default:
             cout << "Unknown message from Server" << endl;
     }

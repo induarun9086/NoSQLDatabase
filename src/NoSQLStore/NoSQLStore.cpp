@@ -41,6 +41,34 @@ KeyValueStore* NoSQLStore::getKeyValueStore() {
     return keyValueStore;
 }
 
+int NoSQLStore:: getRegisteredConnections(int *pConnectionID,int notificationType)
+{
+    int count = 0;
+    map<int, Connection*>::iterator iter;
+
+        for (iter = connectionMap.begin(); iter != connectionMap.end(); ++iter) {
+           Connection* connection = (Connection*)iter->second;
+           if((notificationType == NOSQL_DATABASE_NOTIFY_ADD) && (connection->notifyAdd == true) )
+           {
+               pConnectionID[count] = connection->connectionID;
+               count++ ;
+               
+           }
+           else if((notificationType == NOSQL_DATABASE_NOTIFY_UPDATE) && (connection->notifyUpdate== true) )
+           {
+               pConnectionID[count] = connection->connectionID;
+               count++ ;
+               
+           }
+        }
+    
+               
+        return count;
+}
+
 NoSQLStore::~NoSQLStore() {
 
 }
+
+        
+

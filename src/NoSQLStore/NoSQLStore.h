@@ -14,6 +14,9 @@
 #include "../Connection/Connection.h"
 #include "../KeyValueStore/KeyValueStore.h"
 
+#define NOSQL_DATABASE_NOTIFY_ADD ((int) 1)
+#define NOSQL_DATABASE_NOTIFY_UPDATE ((int) 2)
+
 using namespace std;
 
 class NoSQLStore {
@@ -32,6 +35,7 @@ public:
 	int openConnection();
 	void closeConnection(int);
 	Connection* getConnection(int);
+        int getRegisteredConnections(int *pConnectionID,int notificationType);
 	//Connection getKeyValueStore();
         //void evaluateChange(int,string,string);
         KeyValueStore* getKeyValueStore();
