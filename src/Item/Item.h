@@ -13,6 +13,12 @@
 
 using namespace std;
 
+struct itemList
+{
+    char itemData[100][1024];
+    int numberOfItems;
+};
+
 class Item {
 private:
     int itemID;

@@ -251,7 +251,7 @@ bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
 
 #endif
   
-  cout << "getMsg " << msgAvai << ", " << retSize << "/" << sizeof(ipcMsg) << ", " << err << endl;
+  //cout << "getMsg " << msgAvai << ", " << retSize << "/" << sizeof(ipcMsg) << ", " << err << endl;
   
   return msgAvai;
 }
@@ -274,5 +274,5 @@ void cIPCIntf::sendMsg(ipcMsg* pIPCMsg)
   
 #endif
   
-  cout << "sendMsg " << msgSent << ", " << sentSize << "/" << sizeof(ipcMsg) << ", " << err << endl;
+  //cout << "sendMsg " << msgSent << ", " << sentSize << "/" << sizeof(ipcMsg) << ", " << err << endl;
 }

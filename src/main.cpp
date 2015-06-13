@@ -13,26 +13,27 @@
 #include <sstream>
 
 #include "main.h"
-#include <boost/interprocess/shared_memory_object.hpp>
-#include <boost/interprocess/mapped_region.hpp>
-#include <boost/thread/thread.hpp>
 
 using namespace boost::interprocess;
 
-char* mem;
+struct sharedMem listSharedMem;
+struct sharedMem notificationSharedMem;
+char* plistMemory;
+char* pNotificationMemory;
 int connectionID = -1;
 
 using namespace std;
 
 void notify_thread() {
     int currentCount = 0;
-    struct notificationMsg* pNotificationMsg;
+    const struct notificationMsg* pNotificationMsg;
     bool matchFound = false;
+
     while (1) {
         matchFound = false;
         sleep(1);
-
-        pNotificationMsg = (struct notificationMsg*) &mem[0];
+        
+        pNotificationMsg = (const struct notificationMsg*) pNotificationMemory;
         if (currentCount != pNotificationMsg->count) {
             currentCount = pNotificationMsg->count;   
 
@@ -46,12 +47,12 @@ void notify_thread() {
             }
             if (matchFound) {
                 if (pNotificationMsg->notificationID == NOSQL_DATABASE_NOTIFY_ADD) {
-                    cout << "Item has been added" << endl << &pNotificationMsg->itemDetails[0] << endl << ">>";
+                    cout << "Item has been added" << endl << &pNotificationMsg->itemDetails[0] << endl << ">>" << endl;
                 }
 
 
                 if (pNotificationMsg->notificationID == NOSQL_DATABASE_NOTIFY_UPDATE) {
-                    cout << "Item has been updated" << endl << &pNotificationMsg->itemDetails[0] << endl << ">>";
+                    cout << "Item has been updated" << endl << &pNotificationMsg->itemDetails[0] << endl << ">>" << endl;
                 }
             }
         }
@@ -61,6 +62,41 @@ void notify_thread() {
 
 }
 
+char* createSharedMemory(struct sharedMem* pShm, const char* name,int size,int access)
+{
+    if(access == 0)
+    {
+        pShm->shm = shared_memory_object(open_or_create, name, read_write);
+    }
+    else //if(access == 1)
+    {
+        pShm->shm = shared_memory_object(open_or_create, name, read_only);
+    }
+    
+    if(size != 0)
+    {
+        //Set size
+        pShm->shm.truncate(size);
+    }
+    //Map the whole shared memory in this process
+    if(access == 0)
+    {
+        pShm->region = mapped_region(pShm->shm, read_write);
+    }
+    else //if(access == 1)
+    {
+        pShm->region = mapped_region(pShm->shm, read_only);
+    }
+
+    if(size != 0)
+    {
+        //Write all the memory to 0
+        memset(pShm->region.get_address(), 0, pShm->region.get_size());
+    }
+
+    return static_cast<char*>(pShm->region.get_address());
+}
+
 int main(int argc, char* argv[]) {
     /* Validate the number of arguments */
     if (argc < 2) {
@@ -68,27 +104,20 @@ int main(int argc, char* argv[]) {
     } else {
         /* If option s is given then we should run in server mode */
         if (argv[1][0] == 's') {
-
-            shared_memory_object shm(open_or_create, "MySharedMemory",
-                    read_write);
-
-            //Set size
-            shm.truncate(1000);
-
-            //Map the whole shared memory in this process
-            mapped_region region(shm, read_write);
-
-            //Write all the memory to 0
-            memset(region.get_address(), 0, region.get_size());
-
-            mem = static_cast<char*> (region.get_address());
-            doServerProcess();
+            pNotificationMemory = createSharedMemory(&notificationSharedMem, "Notification",2048,0);
+            plistMemory = createSharedMemory(&listSharedMem, "List",104800,0);
+            if((pNotificationMemory != NULL) && (plistMemory != NULL))
+            {
+                doServerProcess();
+            }
         } else /* Else in client mode */ {
-            shared_memory_object shm(open_only, "MySharedMemory", read_only);
-            mapped_region region(shm, read_only);
-            mem = static_cast<char*> (region.get_address());
-            boost::thread workerThread(notify_thread);
-            doClientProcess();
+            pNotificationMemory = createSharedMemory(&notificationSharedMem, "Notification",0,1);
+            plistMemory = createSharedMemory(&listSharedMem, "List",0,1);
+            if((pNotificationMemory != NULL) && (plistMemory != NULL))
+            {
+                boost::thread workerThread(notify_thread);
+                doClientProcess();
+            }
         }
     }
     return 0;
@@ -200,7 +229,7 @@ void doClientProcess() {
     while (1) {
         /* Get the next command from user */
         do {
-            cout << endl << ">>";
+            cout << endl << ">> ";
             getline(cin, command);
             error = parseCommand(command, &sendMsg);
         } while (error == true);
@@ -283,7 +312,7 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             strcpy(&notificationMsg.itemDetails[0], addedItem.c_str());
             notificationMsg.numberOfClients =
                     pNoSqlStore->getRegisteredConnections(&notificationMsg.connectionID[0], NOSQL_DATABASE_NOTIFY_ADD);
-            memcpy(&mem[0], &notificationMsg, sizeof (notificationMsg));
+            memcpy(pNotificationMemory, &notificationMsg, sizeof (notificationMsg));
         }
             break;
 
@@ -307,7 +336,7 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             strcpy(&notificationMsg.itemDetails[0], updatedItem.c_str());
             notificationMsg.numberOfClients =
                     pNoSqlStore->getRegisteredConnections(&notificationMsg.connectionID[0], NOSQL_DATABASE_NOTIFY_UPDATE);
-            memcpy(&mem[0], &notificationMsg, sizeof (notificationMsg));
+            memcpy(pNotificationMemory, &notificationMsg, sizeof (notificationMsg));
         }
             break;
 
@@ -315,8 +344,8 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
         {
             cout << "List Item Request has been received from the client : " << connectionID << endl;
             Connection* connection = pNoSqlStore->getConnection(connectionID);
-            string returnValue = connection->listItem();
-            pSendMsg->returnValue = returnValue;
+            struct itemList* pList = (struct itemList*)plistMemory;
+            connection->listItem(pList);
             pSendMsg->replyStatus = 0;
         }
             break;
@@ -381,9 +410,17 @@ bool handleClientCommands(struct ipcMsg rcvdMsg, int* pConId) {
             break;
 
         case NOSQL_DATABASE_LIST:
+        {
             cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
-            cout << rcvdMsg.returnValue;
+            struct itemList* pList =  (struct itemList*) plistMemory;
+
+            cout << "List of items:" << endl << endl;
+            for(int i = 0; i < pList->numberOfItems;i++)
+            {
+                cout << pList->itemData[i] << endl;
+            }
             break;
+        }
 
         case NOSQL_DATABASE_DETAILS:
         {

@@ -117,27 +117,16 @@ string KeyValueStore::getItem(int itemID) {
 
 }
 
-string KeyValueStore::listItems() {
-    std::vector<string> list;
+void KeyValueStore::listItems(struct itemList* pList) {
+
     map<int, string>::iterator iter;
+    int i = 0;
 
     for (iter = dataMap.begin(); iter != dataMap.end(); ++iter) {
-        list.push_back(iter->second);
+        strcpy(&pList->itemData[i][0], iter->second.c_str());
+        i++;
     }
-
-    std::ostringstream oss;
-
-    if (!list.empty()) {
-        // Convert all but the last element to avoid a trailing ","
-        std::copy(list.begin(), list.end() - 1,
-                std::ostream_iterator<string>(oss, ","));
-
-        // Now add the last element with no delimiter
-        oss << list.back();
-    }
-
-    return oss.str();
-
+    pList->numberOfItems = i;
 }
 
 

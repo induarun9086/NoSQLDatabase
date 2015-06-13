@@ -30,7 +30,7 @@ public:
     string addItem(Item* item);
     string manipulateItem(Item* item);
     string getItem(int itemID);
-    string listItems();
+    void listItems(struct itemList* pList);
     string serializeItem(Item* item);
     void loadDataToFile();
     void loadDataToMap();

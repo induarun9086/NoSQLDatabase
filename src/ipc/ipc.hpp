@@ -39,7 +39,6 @@ struct ipcMsg
     int itemID;
     char itemName[32];
     char description[512];
-    int quantity;
     double price; 
     char event[10];
     int replyStatus;

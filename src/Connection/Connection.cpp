@@ -37,9 +37,9 @@ string Connection::getItem(int itemID)
     return keyValueStore->getItem(itemID);
 }
 
-string Connection::listItem()
+void Connection::listItem(struct itemList* pList)
 {
-    return keyValueStore->listItems();
+     keyValueStore->listItems(pList);
 }
 
 void Connection::registerEvent(string event)

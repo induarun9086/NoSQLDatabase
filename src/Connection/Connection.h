@@ -30,7 +30,7 @@ public:
 	string getItem(int itemID);
 	string addItem(Item* item);
 	string updateItem(Item* item);
-        string listItem();
+        void listItem(struct itemList* pList);
 	void registerEvent(string event);
 	//void unregisterEvent(int);
 };
