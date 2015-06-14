@@ -12,6 +12,10 @@
 #include <iomanip>
 #include <sstream>
 
+#include <boost/interprocess/shared_memory_object.hpp>
+#include <boost/interprocess/mapped_region.hpp>
+#include <boost/thread/thread.hpp>
+
 #include "main.h"
 
 using namespace boost::interprocess;

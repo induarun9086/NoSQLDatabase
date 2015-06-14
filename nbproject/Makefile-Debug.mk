@@ -57,7 +57,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=-L/cygdrive/C/Cygwin/usr/local/lib -lboost_system.dll -lboost_thread.dll -lboost_timer.dll
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -70,32 +70,32 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql.exe: ${OBJECTFILES}
 ${OBJECTDIR}/src/Connection/Connection.o: src/Connection/Connection.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Connection
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/cygdrive/C/Program\ Files/boost_1_58_0 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Connection/Connection.o src/Connection/Connection.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Cygwin/usr/local/include/boost -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Connection/Connection.o src/Connection/Connection.cpp
 
 ${OBJECTDIR}/src/Item/Item.o: src/Item/Item.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Item
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/cygdrive/C/Program\ Files/boost_1_58_0 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Item/Item.o src/Item/Item.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Cygwin/usr/local/include/boost -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Item/Item.o src/Item/Item.cpp
 
 ${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o: src/KeyValueStore/KeyValueStore.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/KeyValueStore
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/cygdrive/C/Program\ Files/boost_1_58_0 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o src/KeyValueStore/KeyValueStore.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Cygwin/usr/local/include/boost -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/KeyValueStore/KeyValueStore.o src/KeyValueStore/KeyValueStore.cpp
 
 ${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o: src/NoSQLStore/NoSQLStore.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/NoSQLStore
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/cygdrive/C/Program\ Files/boost_1_58_0 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o src/NoSQLStore/NoSQLStore.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Cygwin/usr/local/include/boost -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/NoSQLStore/NoSQLStore.o src/NoSQLStore/NoSQLStore.cpp
 
 ${OBJECTDIR}/src/ipc/ipc.o: src/ipc/ipc.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/ipc
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/cygdrive/C/Program\ Files/boost_1_58_0 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ipc/ipc.o src/ipc/ipc.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Cygwin/usr/local/include/boost -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ipc/ipc.o src/ipc/ipc.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/cygdrive/C/Program\ Files/boost_1_58_0 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -g -I/cygdrive/C/Cygwin/usr/local/include/boost -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 # Subprojects
 .build-subprojects:

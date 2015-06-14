@@ -65,11 +65,19 @@
       <compileType>
         <ccTool>
           <incDir>
-            <pElem>C:/Program Files/boost_1_58_0</pElem>
+            <pElem>C:/Cygwin/usr/local/include/boost</pElem>
           </incDir>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nosql</output>
+          <linkerAddLib>
+            <pElem>C:/Cygwin/usr/local/lib</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibLibItem>boost_system.dll</linkerLibLibItem>
+            <linkerLibLibItem>boost_thread.dll</linkerLibLibItem>
+            <linkerLibLibItem>boost_timer.dll</linkerLibLibItem>
+          </linkerLibItems>
         </linkerTool>
       </compileType>
       <item path="src/Connection/Connection.cpp" ex="false" tool="1" flavor2="0">

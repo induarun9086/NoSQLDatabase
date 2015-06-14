@@ -12,10 +12,6 @@
 #include "NoSQLStore/NoSQLStore.h"
 #include "Connection/Connection.h"
 
-#include <boost/interprocess/shared_memory_object.hpp>
-#include <boost/interprocess/mapped_region.hpp>
-#include <boost/thread/thread.hpp>
-
 using namespace std;
 using namespace boost::interprocess;
 
