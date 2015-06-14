@@ -42,7 +42,7 @@ struct ipcMsg
     double price; 
     char event[10];
     int replyStatus;
-    string returnValue;
+    char returnValue[1024];
 };
 
 class cIPCIntf

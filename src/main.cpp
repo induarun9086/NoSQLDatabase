@@ -155,7 +155,13 @@ bool parseCommand(string command, struct ipcMsg* psendMsg) {
         psendMsg->commandID = NOSQL_DATABASE_ADD_EVENT;
         commandstream >> psendMsg->event;
         error = commandstream.good();
-    } else if (commandString.compare("close") == 0) {
+    }
+    else if (commandString.compare("unregister") == 0) {
+        psendMsg->commandID = NOSQL_DATABASE_REMOVE_EVENT;
+        commandstream >> psendMsg->event;
+        error = commandstream.good();
+    }
+    else if (commandString.compare("close") == 0) {
         psendMsg->commandID = NOSQL_DATABASE_CLOSE_CONNECTION;
         error = false;
     } else {
@@ -359,7 +365,7 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             cout << "Details Item Request has been received from the client : " << connectionID << endl;
             Connection* connection = pNoSqlStore->getConnection(connectionID);
             string returnValue = connection->getItem(rcvdMsg.itemID);
-            pSendMsg->returnValue = returnValue;
+            strcpy(pSendMsg->returnValue, returnValue.c_str());
             pSendMsg->replyStatus = 0;
         }
             break;
@@ -370,14 +376,17 @@ bool handleServerCommands(NoSQLStore* pNoSqlStore, struct ipcMsg rcvdMsg, struct
             string event(rcvdMsg.event);
             Connection* connection = pNoSqlStore->getConnection(connectionID);
             connection->registerEvent(event);
-            pSendMsg->replyStatus = 1;
+            pSendMsg->replyStatus = 0;
         }
             break;
 
         case NOSQL_DATABASE_REMOVE_EVENT:
         {
             cout << "Remove Event Request has been received from the client : " << connectionID << endl;
-            pSendMsg->replyStatus = 1;
+            string event(rcvdMsg.event);
+            Connection* connection = pNoSqlStore->getConnection(connectionID);
+            connection->unRegisterEvent(event);
+            pSendMsg->replyStatus = 0;
         }
             break;
 
@@ -434,6 +443,9 @@ bool handleClientCommands(struct ipcMsg rcvdMsg, int* pConId) {
         }
 
         case NOSQL_DATABASE_ADD_EVENT:
+            cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
+            break;
+        case NOSQL_DATABASE_REMOVE_EVENT:
             cout << "Reply Received from Server : " << rcvdMsg.replyStatus << endl;
             break;
         default:

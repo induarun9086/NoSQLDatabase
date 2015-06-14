@@ -32,7 +32,7 @@ public:
 	string updateItem(Item* item);
         void listItem(struct itemList* pList);
 	void registerEvent(string event);
-	//void unregisterEvent(int);
+	void unRegisterEvent(string event);
 };
 
 #endif /* SRC_CONNECTION_CONNECTION_H_ */

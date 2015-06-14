@@ -35,7 +35,6 @@ string KeyValueStore::serializeItem(Item* item) {
     boost::property_tree::write_json(buf, pt, false);
     std::string json = buf.str();
     dataMap[item->getItemID()] = json;
-    cout << json;
     numberOfItems++;
     return json;
 }

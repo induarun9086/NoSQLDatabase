@@ -58,3 +58,19 @@ void Connection::registerEvent(string event)
     }
 }
 
+void Connection::unRegisterEvent(string event)
+{
+    if(event.compare("add") == 0)
+    {
+        notifyAdd = false;
+    }
+    else if(event.compare("update") == 0)
+    {
+        notifyUpdate = false;
+    }
+    else
+    {
+        throw std::invalid_argument( "Invalid event provided" );
+    }
+}
+
