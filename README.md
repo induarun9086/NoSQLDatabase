@@ -1,6 +1,6 @@
 # NoSQL DataBase Implementation:
 
- Download the zip and build the projects with IDE (eclipse or NetBeans) to generate .exe file
+ Download the zip and build the project with any IDE (eclipse or NetBeans) to generate .exe file
  
  1.Go to comand prompt and run the lauchserver.bat which will start the server
  
