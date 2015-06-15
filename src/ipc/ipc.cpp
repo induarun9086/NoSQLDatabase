@@ -236,7 +236,7 @@ void cIPCIntf::closeIf(bool final)
 bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
 {
   bool msgAvai = false;
-  unsigned int retSize = 0;
+  long unsigned int retSize = 0;
     
 #if _OS_WINDOWS_
   
@@ -259,7 +259,7 @@ bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
 void cIPCIntf::sendMsg(ipcMsg* pIPCMsg)
 {
     bool msgSent = false;
-    unsigned int sentSize = 0;
+    long unsigned int sentSize = 0;
     
 #if _OS_WINDOWS_
     
