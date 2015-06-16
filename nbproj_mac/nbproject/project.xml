@@ -541,6 +541,7 @@
             <formatting>
                 <project-formatting-style>false</project-formatting-style>
             </formatting>
+            <header-extensions>h,hpp</header-extensions>
         </data>
     </configuration>
 </project>
