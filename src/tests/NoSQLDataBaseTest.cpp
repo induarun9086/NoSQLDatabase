@@ -104,7 +104,5 @@ BOOST_AUTO_TEST_CASE(NoSQLTest)
     testunRegisterEvent(connection,"update"); 
         
     BOOST_CHECK(connection->notifyUpdate == false);
-    
-   
 }
 
