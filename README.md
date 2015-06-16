@@ -2,18 +2,16 @@
 
  Download the zip and build the project with the following commands
  
-   -> Navigate to the project folder in the command prompt.
-   
-   -> Run "cmake CMakeLists.txt" to configure the cmake environment.
-   
-   -> When completed build the project via the "make" command.
+   * Navigate to the project folder in the command prompt.
+   * Run "cmake CMakeLists.txt" to configure the cmake environment.
+   * When completed build the project via the "make" command.
    
    
  When the project has been built completely follow the instruction below to run
  
-	1. Run "lauchserver.bat" which will start the server.
-	2. Run "launchclient.bat" which will start the client.
-    	3. If multiple clients are required, run launchclient.bat again.
+        1. Run "lauchserver.bat" which will start the server.
+        2. Run "launchclient.bat" which will start the client.
+        3. If multiple clients are required, run launchclient.bat again.
  
  The inputs has to be entered in the client consoles only, there is no need for commands in 
  the server console. The server console is only for viewing debug messages. The possible
