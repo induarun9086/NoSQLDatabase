@@ -236,15 +236,16 @@ void cIPCIntf::closeIf(bool final)
 bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
 {
   bool msgAvai = false;
-  long unsigned int retSize = 0;
     
 #if _OS_WINDOWS_
   
+  DWORD retSize = 0;
   msgAvai = ReadFile(hPipe, pIPCMsg, sizeof(ipcMsg), &retSize, NULL);
   err = GetLastError();
   
 #elif _OS_MAC_X_
   
+  unsigned int retSize = 0;
   retSize = read(hIpFile, pIPCMsg, sizeof(ipcMsg));
   msgAvai = ((retSize >= sizeof(ipcMsg))?(true):(false));
   err = ((msgAvai == true)?(0):(((errno == 0)?(-1):(errno))));
@@ -259,15 +260,16 @@ bool cIPCIntf::getMsg(ipcMsg* pIPCMsg)
 void cIPCIntf::sendMsg(ipcMsg* pIPCMsg)
 {
     bool msgSent = false;
-    long unsigned int sentSize = 0;
     
 #if _OS_WINDOWS_
-    
+  
+  DWORD sentSize = 0;
   msgSent = WriteFile(hPipe, pIPCMsg, sizeof(ipcMsg), &sentSize, NULL);
   err = GetLastError();
   
 #elif _OS_MAC_X_
   
+  unsigned int sentSize = 0;
   sentSize = write(hOpFile, pIPCMsg, sizeof(ipcMsg));
   msgSent  = ((sentSize >= sizeof(ipcMsg))?(true):(false));
   err = ((msgSent == true)?(0):(((errno == 0)?(-1):(errno))));

@@ -1,11 +1,16 @@
 cmake_minimum_required (VERSION 3.1.2)
 
-add_executable(main main.cpp)
-set_property(TARGET main PROPERTY CXX_STANDARD 11)
-set_property(TARGET main PROPERTY CXX_STANDARD_REQUIRED true)
+project(NoSQLDatabase)
 
-add_subdirectory(Connection)
-add_subdirectory(Item)
-add_subdirectory(KeyValueStore)
-add_subdirectory(NoSQLStore)
-add_subdirectory(ipc)
+include_directories(./)
+link_directories(./)
+
+find_package(Boost 1.58.0 COMPONENTS system thread timer) 
+
+include_directories(${Boost_INCLUDE_DIRS}) 
+
+add_executable(NoSQLDatabase main.cpp Connection/Connection.cpp ipc/ipc.cpp Item/Item.cpp KeyValueStore/KeyValueStore.cpp NoSQLStore/NoSQLStore.cpp)
+target_link_libraries(NoSQLDatabase ${Boost_LIBRARIES})
+
+set_property(TARGET NoSQLDatabase PROPERTY CXX_STANDARD 11)
+set_property(TARGET NoSQLDatabase PROPERTY CXX_STANDARD_REQUIRED true)

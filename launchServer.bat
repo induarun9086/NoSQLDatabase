@@ -1,2 +1,2 @@
-dist\Debug\Cygwin_4.x-Windows\nosql.exe s
+bin\NoSQLDatabase.exe s
 pause
