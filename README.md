@@ -6,7 +6,6 @@
    * Run "cmake CMakeLists.txt" to configure the cmake environment.
    * When completed build the project via the "make" command.
    
-   
  When the project has been built completely follow the instruction below to run
  
         1. Run "lauchserver.bat" which will start the server.
