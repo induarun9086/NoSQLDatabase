@@ -11,6 +11,3 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(NoSQLDatabase main.cpp Connection/Connection.cpp ipc/ipc.cpp Item/Item.cpp KeyValueStore/KeyValueStore.cpp NoSQLStore/NoSQLStore.cpp)
 target_link_libraries(NoSQLDatabase ${Boost_LIBRARIES})
-
-set_property(TARGET NoSQLDatabase PROPERTY CXX_STANDARD 11)
-set_property(TARGET NoSQLDatabase PROPERTY CXX_STANDARD_REQUIRED true)
