@@ -2,8 +2,6 @@ cmake_minimum_required (VERSION 3.1.2)
 
 project(NoSQLDatabase)
 
-enable_testing()
-
 include_directories(./)
 link_directories(./)
 
