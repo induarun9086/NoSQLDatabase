@@ -36,8 +36,6 @@ public:
 	void closeConnection(int);
 	Connection* getConnection(int);
         int getRegisteredConnections(int *pConnectionID,int notificationType);
-	//Connection getKeyValueStore();
-        //void evaluateChange(int,string,string);
         KeyValueStore* getKeyValueStore();
 
 };

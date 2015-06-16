@@ -21,7 +21,7 @@ public:
         KeyValueStore* keyValueStore;
         bool notifyAdd;
         bool notifyUpdate;
-        //string updateElements[];
+
 public:
 	Connection(int cID,KeyValueStore* keyValueStore);
 	virtual ~Connection();

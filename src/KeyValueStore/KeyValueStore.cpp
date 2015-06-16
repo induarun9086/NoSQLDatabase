@@ -102,7 +102,7 @@ string KeyValueStore::getItem(int itemID) {
     try {
         map<int, string>::iterator pos;
         pos = dataMap.find(itemID);
-
+       
         if (pos == dataMap.end()) {
 
             value = "Item does not exists";
